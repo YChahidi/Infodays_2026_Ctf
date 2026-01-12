@@ -1,0 +1,94 @@
+services:
+  db:
+    image: mariadb:10.5
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${CTFD_DB_USER}
+      MYSQL_PASSWORD: ${CTFD_DB_PASSWORD}
+      MYSQL_DATABASE: ${CTFD_DB_NAME}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - ctfd_net
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    networks:
+      - ctfd_net
+
+
+
+
+
+  web-gallery:
+    build: ./challenges/web/the_secret_archive
+    ports:
+      - "8002:5000"
+    networks:
+      - ctfd_net
+
+  web-ping:
+    build: ./challenges/web/ping_o_matic
+    ports:
+      - "8001:5000"
+    networks:
+      - ctfd_net
+
+  web-cookies:
+    build: ./challenges/web/VIP_Access_Session_Inspector
+    ports:
+      - "8003:5000"
+    networks:
+      - ctfd_net
+
+  web-sqli:
+    build: ./challenges/web/scout_database
+    ports:
+      - "8005:8005"
+    networks:
+      - ctfd_net
+
+
+  web-pwn-var:
+    build: ./challenges/pwn/var_review
+    ports:
+      - "8006:8006"
+    networks:
+      - ctfd_net
+    restart: always
+
+
+
+
+
+
+
+
+
+  ctfd:
+    image: ctfd/ctfd:latest
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=mysql+pymysql://${CTFD_DB_USER}:${CTFD_DB_PASSWORD}@db:3306/${CTFD_DB_NAME}
+      - REDIS_URL=redis://${CTFD_REDIS_HOST}:6379
+      - UPLOAD_FOLDER=/var/uploads
+      - SECRET_KEY=${CTFD_SECRET_KEY}
+    volumes:
+      - ctfd_data:/var/uploads
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "127.0.0.1:8000:8000"
+    networks:
+      - ctfd_net
+
+volumes:
+  db_data:
+  ctfd_data:
+
+networks:
+  ctfd_net:
+    driver: bridge
