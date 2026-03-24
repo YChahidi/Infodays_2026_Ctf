@@ -13,7 +13,7 @@ HTML = """
     {% if is_admin %}
         <div style="background: #e1ffdc; padding: 20px; border: 2px solid green;">
             <h3>Access Granted: Administrator</h3>
-            <p>Flag: <b>infodays{b64_d3c0d3_f0und}</b></p>
+            <p>Flag: <b>INFODAYS{b64_d3c0d3_f0und}</b></p>
         </div>
     {% else %}
         <div style="background: #ffdbdb; padding: 20px; border: 2px solid red;">

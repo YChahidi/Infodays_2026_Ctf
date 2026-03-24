@@ -32,4 +32,4 @@ Capture: Refresh the page. The server reads the modified session_data, sees is_a
 
 🏁 Flag:
 
-Flag: flag{infodays_b64_d3c0d3_f0und}
+Flag: INFODAYS{b64_d3c0d3_f0und}

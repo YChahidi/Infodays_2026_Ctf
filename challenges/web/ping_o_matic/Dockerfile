@@ -10,7 +10,7 @@ RUN pip install flask
 # Copy the app and the flag
 COPY app.py .
 # The "Flag" is just a text file on the server
-RUN echo "flag{infodays_cmnd_inj3ction_succ3ss}" > /flag.txt
+RUN echo "INFODAYS{cmnd_inj3ction_succ3ss}" > /flag.txt
 
 USER ctfuser
 EXPOSE 5000
