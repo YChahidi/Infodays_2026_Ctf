@@ -1,13 +1,20 @@
-📝 Description
-The team sheet has arrived at the referee's desk, but the ink is scrambled! It seems the coach used a special shift to keep the tactics secret: TYQZOLJD{EPLXHZCV_XLVPD_ESP_OCPLX} Hint: Number of players on a team.
+# 🚩 Coach Formation - Ultra Hard Mode
 
-🕵️ Solution
-Analyze Hint: In football, a standard team has 11 players.
+## 📝 Description
+The coach's tactical notebook was intercepted. Three encrypted messages were found.
 
-Identify Cipher: This is a Caesar Cipher with a rotation of 11 (ROT11).
+## 🔍 Vulnerability
+The encryption uses an LCG (Linear Congruential Generator) with standard glibc parameters:
+- a = 1103515245
+- c = 12345
+- m = 2^31
 
-Decrypt: Shifting each letter backward by 11 positions reveals the plain text.
+## 🛠️ Solution Steps
 
-Command: echo "TYQZOLJD{EPLXHZCV_XLVPD_ESP_OCPLX}" | tr 'A-Za-z' 'P-ZA-Op-za-o'
+1. **Extract keystream** from known plaintext-ciphertext pair (Message 1)
+2. **Find seed residue** modulo 26 from first keystream value
+3. **Brute force seed** searching only residues (0 to 2^31 in steps of 26)
+4. **Decrypt flag** using recovered seed
 
-Flag: INFODAYS{TEAMWORK_MAKES_THE_DREAM}
+## 🏁 Flag
+`INFODAYS{L1NH4RT_M0R41N_LLL_4TT4CK_2026}`
