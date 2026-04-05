@@ -1,15 +1,21 @@
-# 🏟️ Stadium Metadata Challenge
+# VIP Invitation - 2 Layer Hard Mode
 
-The challenge consists of downloading an image named `stadium.jpeg` from the provided website and finding a hidden flag inside it. When opening the image normally, nothing unusual is visible, which suggests that the flag is not hidden visually but rather stored in the file’s metadata.
+## Description
+You received a stadium image with password hint in filename.
 
-After downloading the image, the next step is to analyze its metadata. Image files often contain additional information such as the author, software used, creation date, or artist name. To extract this information, we use the `exiftool` utility, which is commonly used in digital forensics and CTF challenges.
+## Solution
 
-Once the file is available locally, we run ExifTool on it:
+### Layer 1 - Steghide
+Password is in filename: Agadir2030
 
-exiftool stadium.jpeg
+steghide extract -sf stadium_vip_Agadir2030.jpg -p Agadir2030
 
-This command outputs all metadata associated with the image. While reviewing the output, we notice a specific property named Artist. The value of this field contains the flag directly.
+This extracts: extracted.png
 
-Artist                          : INFODAYS{ST4D1UM_V1P_4CC3SS}
+### Layer 2 - LSB Steganography
+The PNG has flag hidden in blue channel LSB.
 
+Use Python with PIL to extract LSB from blue channel, then convert bits to text.
 
+## Flag
+INFODAYS{2_L4Y3R_ST3G4N0GR4PHY_M4ST3R_2026}
