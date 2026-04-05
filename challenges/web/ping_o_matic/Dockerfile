@@ -1,18 +1,14 @@
 FROM python:3.9-slim
 
-# Create a user so we aren't running as root (Good Practice)
-RUN useradd -m ctfuser
-WORKDIR /home/ctfuser
-
-# Install Flask
+WORKDIR /app
+COPY app.py .
 RUN pip install flask
 
-# Copy the app and the flag
-COPY app.py .
-# The "Flag" is just a text file on the server
-RUN echo "INFODAYS{cmnd_inj3ction_succ3ss}" > /flag.txt
+# Install ping command
+RUN apt-get update && apt-get install -y iputils-ping && rm -rf /var/lib/apt/lists/*
 
-USER ctfuser
+# Create flag file
+RUN echo "INFODAYS{CMD_INJ3CT10N_W4F_BYP4SS_2026}" > /flag.txt
+
 EXPOSE 5000
-
 CMD ["python", "app.py"]
