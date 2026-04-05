@@ -1,0 +1,6 @@
+gcc -o var_review var_review.c \
+    -fstack-protector-all \
+    -Wl,-z,relro,-z,now \
+    -pie \
+    -fPIE \
+    -D_FORTIFY_SOURCE=2

@@ -1,36 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 void play_match() {
-    char flag[64];
-    char comment[128];
+    char comment[256];
+    char *flag = NULL;
+    char *flag_ptr = NULL;
     FILE *f = fopen("flag.txt", "r");
-
+    
     if (f == NULL) {
-        printf("Flag file is missing! Contact Admin.\n");
+        printf("Flag file missing!\n");
         exit(1);
     }
-
-    // Read flag onto the STACK
-    fgets(flag, sizeof(flag), f);
+    
+    // Flag on HEAP (not stack!)
+    flag = malloc(128);
+    fgets(flag, 128, f);
     fclose(f);
-
-    printf("Welcome to the VAR Review System.\n");
-    printf("Enter your comment on the last play: ");
     
-    // Read user input
+    // Store flag pointer on stack
+    flag_ptr = flag;
+    
+    printf("\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║     VAR Review System - 2030 Edition   ║\n");
+    printf("╠════════════════════════════════════════╣\n");
+    printf("║  Enter your controversial comment      ║\n");
+    printf("║  about the referee's decision:         ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+    printf("\n>> ");
+    
     fgets(comment, sizeof(comment), stdin);
-
-    printf("\nReferee's Log: ");
-    // VULNERABILITY: User input is passed directly as the format string
-    printf(comment); 
+    comment[strcspn(comment, "\n")] = 0;
     
-    printf("\nReview complete.\n");
+    printf("\n");
+    printf("┌────────────────────────────────────────┐\n");
+    printf("│ Referee's Response:                    │\n");
+    printf("├────────────────────────────────────────┤\n");
+    printf("│ ");
+    
+    // FORMAT STRING VULNERABILITY
+    printf(comment);
+    
+    printf("\n└────────────────────────────────────────┘\n");
+    
+    free(flag);
 }
 
 int main() {
-    // Disable buffering so the player sees output immediately over the network
     setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stderr, NULL, _IONBF, 0);
     play_match();
     return 0;
 }

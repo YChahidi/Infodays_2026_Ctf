@@ -1,6 +1,5 @@
 FROM ubuntu:22.04
 
-# Install socat AND gcc (plus libc-dev for standard headers)
 RUN apt-get update && apt-get install -y \
     socat \
     gcc \
@@ -11,8 +10,19 @@ WORKDIR /app
 COPY var_review.c .
 COPY flag.txt .
 
-# Now gcc will be available to run this command
-RUN gcc -fno-stack-protector -no-pie -o var_review var_review.c
+# Compile with FULL MITIGATIONS:
+# - Stack canary enabled (default)
+# - PIE enabled
+# - Full RELRO
+RUN gcc -o var_review var_review.c \
+    -fstack-protector-all \
+    -Wl,-z,relro,-z,now \
+    -pie \
+    -fPIE \
+    -D_FORTIFY_SOURCE=2
+
+RUN chmod 755 var_review
+RUN rm var_review.c
 
 EXPOSE 8006
 
