@@ -59,6 +59,14 @@ services:
       - ctfd_net
     restart: always
 
+  web-var-check:
+    build: ./challenges/web/var_check_bro
+    ports:
+      - "8007:5000"
+    networks:
+      - ctfd_net
+    restart: always
+
 
 
 
