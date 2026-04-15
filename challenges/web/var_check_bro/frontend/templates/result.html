@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>VAR Review — Result</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #0b3d2e; color: #f5f5f5; max-width: 900px; margin: 40px auto; padding: 20px; }
+        h1 { color: #ffd700; }
+        pre { background: #052e1f; border: 1px solid #ffd700; padding: 16px; border-radius: 6px; white-space: pre-wrap; word-break: break-all; }
+        .err { color: #ff6b6b; }
+        a { color: #ffd700; }
+    </style>
+</head>
+<body>
+    <h1>VAR Review Result</h1>
+    <p><strong>URL submitted:</strong> {{ url }}</p>
+
+    {% if error %}
+        <p class="err">{{ error }}</p>
+    {% else %}
+        <p><strong>Resolved IP:</strong> {{ resolved_ip }}</p>
+        <p><strong>HTTP status:</strong> {{ status }}</p>
+        <h3>Fetched content (first 6000 chars):</h3>
+        <pre>{{ content }}</pre>
+    {% endif %}
+
+    <p><a href="/">&larr; New review</a></p>
+</body>
+</html>
