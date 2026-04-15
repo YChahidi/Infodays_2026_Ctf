@@ -2,9 +2,10 @@
 set -e
 
 # Dynamic flag — generated per container instance unless FLAG env var is provided
+# Format: INFODAYS{SaamNoLimits_<Ronaldo quote>_<random hex>}
 if [ -z "${FLAG}" ]; then
-    RANDHEX=$(head -c 12 /dev/urandom | xxd -p)
-    FLAG="INFODAYS{var_check_bro_${RANDHEX}}"
+    RANDHEX=$(head -c 8 /dev/urandom | xxd -p)
+    FLAG="INFODAYS{SaamNoLimits_your_hate_makes_me_unstoppable_${RANDHEX}}"
 fi
 
 echo -n "${FLAG}" > /flag.txt

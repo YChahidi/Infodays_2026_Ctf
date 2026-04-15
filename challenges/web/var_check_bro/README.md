@@ -16,7 +16,7 @@ Service is added to the root `docker-compose.yml` as `web-var-check` and exposes
 
 ### Flag
 
-The flag is generated **dynamically at container startup**. On each `docker compose up` the entrypoint writes a fresh value like `INFODAYS{var_check_bro_<random-hex>}` to `/flag.txt`.
+The flag is generated **dynamically at container startup**. On each `docker compose up` the entrypoint writes a fresh value like `INFODAYS{SaamNoLimits_your_hate_makes_me_unstoppable_<random-hex>}` to `/flag.txt`. The prefix completes Cristiano Ronaldo's quote *"Your love makes me strong, your hate makes me unstoppable"* — the random suffix guarantees per-instance uniqueness.
 
 To pin a flag for a production CTFd instance, set the `FLAG` env var on the service:
 
