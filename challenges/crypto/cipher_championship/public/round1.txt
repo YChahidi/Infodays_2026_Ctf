@@ -1,0 +1,11 @@
+=== Round 1 — Half-time Scoreboard ===
+
+You intercepted a scoreboard update from the Infodays press
+office. It was XOR'd with a short, repeating key. The message
+begins with a predictable banner — use that.
+
+ciphertext_hex = 087cd88daa6e59f7acdf0a51e0b9eb1d71d887de215cd087f93a63e692ff3c4fdb98ff2575d7b5f13a4fd18bfc2864d087f511718e8ca22d2489d3ed44
+
+Hint: repeating-key XOR, key length somewhere between 3 and 8
+bytes. The plaintext opens with the literal string 'Flag: '
+followed by the usual INFODAYS flag format.
