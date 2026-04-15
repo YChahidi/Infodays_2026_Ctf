@@ -67,6 +67,14 @@ services:
       - ctfd_net
     restart: always
 
+  web-stadium-ci:
+    build: ./challenges/web/stadium_ci
+    ports:
+      - "8008:5000"
+    networks:
+      - ctfd_net
+    restart: always
+
 
 
 
