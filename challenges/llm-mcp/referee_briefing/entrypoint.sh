@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-USER_FLAG="${USER_FLAG:-INFODAYS{SaamNoLimits_placeholder_user}}"
-ROOT_FLAG="${ROOT_FLAG:-INFODAYS{SaamNoLimits_placeholder_root}}"
+: "${USER_FLAG:?USER_FLAG must be set in .env}"
+: "${ROOT_FLAG:?ROOT_FLAG must be set in .env}"
 
 # User flag: lives in a secrets dir the referee user owns but which
 # the MCP server does NOT advertise in list_reports().
