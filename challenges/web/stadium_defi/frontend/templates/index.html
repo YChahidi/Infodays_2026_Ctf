@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Stadium DeFi — Infodays 2026</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #0a1f12; color: #f4f4f4; max-width: 860px; margin: 36px auto; padding: 20px; }
+        h1 { color: #ffd700; letter-spacing: 1px; }
+        h2 { color: #ffd700; border-bottom: 1px solid #1a3a26; padding-bottom: 6px; }
+        .card { background: #0f2f1e; border: 2px solid #ffd700; padding: 22px; border-radius: 6px; margin-bottom: 18px; }
+        code, pre { background: #000; color: #ffd700; padding: 3px 7px; border-radius: 3px; word-break: break-all; }
+        a { color: #ffd700; }
+        .tag { background: #ff4444; color: #000; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; }
+        td { padding: 6px 4px; border-bottom: 1px solid #1a3a26; font-size: 14px; }
+        td:first-child { color: #ffd700; width: 32%; }
+    </style>
+</head>
+<body>
+    <h1>Stadium DeFi — Betting Pool <span class="tag">HARD</span></h1>
+
+    <div class="card">
+        <p>Infodays 2026 tournament betting protocol. The house seeded the
+           pool with ETH liquidity from the organisers. The sealed
+           tournament flag is stored in a Trophy Vault that releases the
+           flag the moment the Betting treasury hits zero.</p>
+    </div>
+
+    <h2>Deployed contracts</h2>
+    <div class="card">
+        <table>
+            <tr><td>Chain ID</td><td><code>31337</code> (Anvil dev chain)</td></tr>
+            <tr><td>RPC endpoint</td><td><code>http://&lt;ctf-host&gt;:8010</code></td></tr>
+            <tr><td>StadiumBetting</td><td><code>{{ betting }}</code></td></tr>
+            <tr><td>TrophyVault</td><td><code>{{ vault }}</code></td></tr>
+            <tr><td>Seeded treasury</td><td><code>{{ seed_wei }}</code> wei</td></tr>
+        </table>
+    </div>
+
+    <h2>Source code</h2>
+    <div class="card">
+        <ul>
+            <li><a href="/source/StadiumBetting.sol">StadiumBetting.sol</a></li>
+            <li><a href="/source/TrophyVault.sol">TrophyVault.sol</a></li>
+        </ul>
+    </div>
+
+    <h2>ABIs</h2>
+    <div class="card">
+        <ul>
+            <li><a href="/abi/StadiumBetting">StadiumBetting ABI</a> (JSON)</li>
+            <li><a href="/abi/TrophyVault">TrophyVault ABI</a> (JSON)</li>
+        </ul>
+    </div>
+
+    <h2>Funded accounts</h2>
+    <div class="card">
+        <p>Anvil exposes the standard ten dev accounts, each preloaded with
+           10000 ETH. Use any of them as your attacker EOA. Private key for
+           <code>account[0]</code>:</p>
+        <pre>0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80</pre>
+        <p>Address: <code>0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266</code></p>
+    </div>
+
+    <h2>Objective</h2>
+    <div class="card">
+        <p>Call <code>TrophyVault.claim()</code>. The vault only releases
+           the sealed flag once the Stadium Betting treasury has been
+           completely drained. Once claimed, read the flag via the
+           <code>flag()</code> view function or the
+           <code>FlagClaimed(address,string)</code> event.</p>
+    </div>
+</body>
+</html>

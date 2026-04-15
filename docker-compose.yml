@@ -75,6 +75,23 @@ services:
       - ctfd_net
     restart: always
 
+  web-stadium-defi:
+    build: ./challenges/web/stadium_defi
+    ports:
+      - "8009:5000"
+      - "8010:8545"
+    networks:
+      - ctfd_net
+    restart: always
+
+  pwn-var-replay:
+    build: ./challenges/pwn/var_replay_buffer
+    ports:
+      - "8011:8011"
+    networks:
+      - ctfd_net
+    restart: always
+
 
 
 
