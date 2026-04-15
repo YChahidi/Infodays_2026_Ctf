@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Stadium CI — Infodays 2026</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #0c2f1e; color: #f4f4f4; max-width: 780px; margin: 40px auto; padding: 20px; }
+        h1 { color: #ffd700; letter-spacing: 1px; }
+        .card { background: #0f5132; border: 2px solid #ffd700; padding: 22px; border-radius: 6px; }
+        .card h2 { margin-top: 0; color: #ffd700; }
+        a { color: #ffd700; }
+        ul { line-height: 1.8; }
+        .small { font-size: 12px; color: #c9c9c9; }
+    </style>
+</head>
+<body>
+    <h1>Stadium CI</h1>
+    <p>Infodays 2026 tournament continuous-integration and VAR replay console. Role:
+       <strong>{{ role }}</strong>.</p>
+
+    <div class="card">
+        <h2>Public areas</h2>
+        <ul>
+            <li><a href="/login">Scout login</a> — public credentials</li>
+            <li><a href="/dashboard">Public build dashboard</a></li>
+        </ul>
+        <h2>Restricted</h2>
+        <ul>
+            <li><a href="/admin">Admin console</a> — VAR room officials only</li>
+        </ul>
+    </div>
+
+    <p class="small">Stadium CI v3.7.2 — powered by legacy Varnish edge cache.</p>
+</body>
+</html>

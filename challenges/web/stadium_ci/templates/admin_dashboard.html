@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>VAR Room — Admin Console</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #050f0a; color: #f4f4f4; max-width: 860px; margin: 40px auto; padding: 20px; }
+        h1 { color: #ff4444; letter-spacing: 1px; }
+        .card { background: #1a0808; border: 2px solid #ff4444; padding: 22px; border-radius: 6px; margin-bottom: 18px; }
+        .card h2 { margin-top: 0; color: #ff4444; }
+        code { background: #000; padding: 3px 7px; border-radius: 3px; color: #ffd700; }
+        .tag { background: #ff4444; color: #000; font-weight: bold; padding: 2px 8px; border-radius: 3px; font-size: 11px; }
+        ul { line-height: 1.9; }
+    </style>
+</head>
+<body>
+    <h1>VAR Room — Admin Console <span class="tag">RESTRICTED</span></h1>
+    <p>Authenticated referee area. All access is logged to the tournament audit trail.</p>
+
+    <div class="card">
+        <h2>Tournament decision reports</h2>
+        <ul>
+            <li>Group stage aggregate — <code>/admin/reports/group-stage</code></li>
+            <li>Round of 16 highlights — <code>/admin/reports/ro16</code></li>
+            <li>Quarter-final disputes — <code>/admin/reports/qf</code></li>
+            <li>Semi-final review — <code>/admin/reports/semifinal</code></li>
+            <li><strong>Final match sealed decision</strong> — <code>/admin/reports/{{ report_id }}</code>
+                <br><small>(contains the sealed tournament flag)</small></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Console notice</h2>
+        <p>Stadium CI runs behind a legacy Varnish edge cache. Static asset paths
+           under <code>/admin/*.css</code> and <code>/admin/*.js</code> are served
+           directly from the edge without hitting the origin. Do not expose
+           admin-only data through those routes.</p>
+    </div>
+</body>
+</html>

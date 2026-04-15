@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Stadium CI — Login</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #0c2f1e; color: #f4f4f4; max-width: 460px; margin: 60px auto; padding: 20px; }
+        .card { background: #0f5132; border: 2px solid #ffd700; padding: 22px; border-radius: 6px; }
+        h1 { color: #ffd700; margin-top: 0; }
+        label { display: block; margin-top: 10px; font-size: 13px; }
+        input { width: 100%; padding: 9px; margin-top: 4px; border-radius: 3px; border: 0; box-sizing: border-box; }
+        button { margin-top: 14px; background: #ffd700; color: #000; border: 0; padding: 10px 18px; font-weight: bold; border-radius: 3px; cursor: pointer; }
+        .err { color: #ff6b6b; }
+        .hint { font-size: 12px; color: #c9c9c9; margin-top: 16px; }
+        a { color: #ffd700; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Scout login</h1>
+        <form method="post" action="/login">
+            <label>Username<input name="username" autocomplete="off"></label>
+            <label>Password<input name="password" type="password" autocomplete="off"></label>
+            <button type="submit">Sign in</button>
+        </form>
+        {% if error %}<p class="err">{{ error }}</p>{% endif %}
+        <p class="hint">Public scout credentials: <code>scout</code> / <code>scout</code>. VAR officials use their own SSO.</p>
+        <p><a href="/">&larr; Home</a></p>
+    </div>
+</body>
+</html>
