@@ -1,0 +1,5 @@
+build/
+src/java/
+src/assets/
+src/res/
+src/AndroidManifest.xml
