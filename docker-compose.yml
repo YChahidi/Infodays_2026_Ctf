@@ -159,6 +159,15 @@ services:
       - ctfd_net
     restart: always
 
+  pwn-shanks:
+    build: ./challenges/pwn/shanks
+    ports:
+      - "8019:8019"
+      - "8020:5000"
+    networks:
+      - ctfd_net
+    restart: always
+
   man-city:
     build: ./challenges/web/man_city
     ports:
