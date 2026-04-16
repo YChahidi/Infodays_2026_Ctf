@@ -3,10 +3,13 @@ FROM ghcr.io/foundry-rs/foundry:latest
 USER root
 WORKDIR /app
 
-RUN apk add --no-cache python3 py3-pip bash curl jq
+RUN apt-get -o Acquire::Check-Valid-Until=false update \
+    && apt-get install -y --no-install-recommends python3 python3-pip jq \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY frontend/requirements.txt /app/frontend/requirements.txt
-RUN pip install --no-cache-dir --break-system-packages -r /app/frontend/requirements.txt
+RUN pip install --no-cache-dir -r /app/frontend/requirements.txt 2>/dev/null || \
+    pip install --no-cache-dir --break-system-packages -r /app/frontend/requirements.txt
 
 COPY foundry.toml /app/foundry.toml
 COPY contracts /app/contracts
