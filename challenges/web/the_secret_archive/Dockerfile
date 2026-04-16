@@ -1,22 +1,20 @@
 FROM python:3.9-slim
 
-# Create a non-root user for security
 RUN useradd -m ctfuser
 WORKDIR /home/ctfuser
 
-# Install dependencies - keeping it lightweight
 RUN pip install --no-cache-dir flask
 
-# Copy only the essential application files
 COPY app.py .
 COPY news.txt .
 
-# THE DYNAMIC PART:
-# Copy the flag from your local folder to /tmp/ to force path traversal
-COPY flag.txt /tmp/the_real_flag.txt
+# Create the directory structure
+RUN mkdir -p /opt/archive/classified
 
-# Security: Ensure ctfuser owns the app directory
-RUN chown -R ctfuser:ctfuser /home/ctfuser
+# Copy flag to the location mentioned in changelog
+COPY flag.txt /opt/archive/classified/flag.txt
+
+RUN chown -R ctfuser:ctfuser /home/ctfuser /opt/archive
 
 USER ctfuser
 EXPOSE 5000
