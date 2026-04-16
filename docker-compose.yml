@@ -135,6 +135,14 @@ services:
       - ctfd_net
     restart: always
 
+  malware-lab:
+    build: ./challenges/blue-team/malware_lab_stadium
+    ports:
+      - "8015:5000"
+    networks:
+      - ctfd_net
+    restart: always
+
 
 
 
