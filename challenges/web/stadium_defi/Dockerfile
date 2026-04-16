@@ -22,6 +22,6 @@ RUN mkdir -p /app/state && \
     cd /app && forge install --no-git foundry-rs/forge-std@v1.9.4 && \
     forge build
 
-EXPOSE 5000 8545
+EXPOSE 8080 8545
 
 ENTRYPOINT ["/app/entrypoint.sh"]

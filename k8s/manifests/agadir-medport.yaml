@@ -1,0 +1,60 @@
+# Template — replace agadir-medport, Misc, 1883, NODE1883, IMAGE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agadir-medport
+  namespace: ctfd
+  labels:
+    app: agadir-medport
+    category: Misc
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: agadir-medport
+  template:
+    metadata:
+      labels:
+        app: agadir-medport
+        category: Misc
+    spec:
+      containers:
+      - name: agadir-medport
+        image: registry.digitalocean.com/infodays-registry/agadir-medport:latest
+        ports:
+        - containerPort: 1883
+        env:
+        - name: FLAG
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: agadir-medport
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agadir-medport
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: agadir-medport
+  ports:
+  - port: 1883
+    targetPort: 1883
+    nodePort: NODE1883

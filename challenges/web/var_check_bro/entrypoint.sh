@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 # Dynamic flag — generated per container instance unless FLAG env var is provided

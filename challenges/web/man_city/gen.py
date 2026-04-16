@@ -16,7 +16,7 @@ Flag difficulty ladder:
   8. Extreme     — JWT alg:none bypass + command injection
 """
 from __future__ import annotations
-import argparse, secrets, sqlite3, json
+import argparse, os, secrets, sqlite3, json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -27,15 +27,16 @@ def main() -> int:
     args = ap.parse_args()
     h = args.hex or secrets.token_hex(4)
 
+    # Use env vars if provided, otherwise generate random flags
     flags = {
-        "FLAG1": f"INFODAYS{{SaamNoLimits_view_source_rookie_{h}}}",
-        "FLAG2": f"INFODAYS{{SaamNoLimits_robots_exposed_{h}}}",
-        "FLAG3": f"INFODAYS{{SaamNoLimits_default_creds_owned_{h}}}",
-        "FLAG4": f"INFODAYS{{SaamNoLimits_sqli_union_dumped_{h}}}",
-        "FLAG5": f"INFODAYS{{SaamNoLimits_ssti_template_pwned_{h}}}",
-        "FLAG6": f"INFODAYS{{SaamNoLimits_path_traversal_lfi_{h}}}",
-        "FLAG7": f"INFODAYS{{SaamNoLimits_pickle_deserialized_{h}}}",
-        "FLAG8": f"INFODAYS{{SaamNoLimits_jwt_none_rce_god_{h}}}",
+        "FLAG1": os.environ.get("FLAG1", f"INFODAYS{{SaamNoLimits_view_source_rookie_{h}}}"),
+        "FLAG2": os.environ.get("FLAG2", f"INFODAYS{{SaamNoLimits_robots_exposed_{h}}}"),
+        "FLAG3": os.environ.get("FLAG3", f"INFODAYS{{SaamNoLimits_default_creds_owned_{h}}}"),
+        "FLAG4": os.environ.get("FLAG4", f"INFODAYS{{SaamNoLimits_sqli_union_dumped_{h}}}"),
+        "FLAG5": os.environ.get("FLAG5", f"INFODAYS{{SaamNoLimits_ssti_template_pwned_{h}}}"),
+        "FLAG6": os.environ.get("FLAG6", f"INFODAYS{{SaamNoLimits_path_traversal_lfi_{h}}}"),
+        "FLAG7": os.environ.get("FLAG7", f"INFODAYS{{SaamNoLimits_pickle_deserialized_{h}}}"),
+        "FLAG8": os.environ.get("FLAG8", f"INFODAYS{{SaamNoLimits_jwt_none_rce_god_{h}}}"),
     }
 
     # ── Write .env ──────────────────────────────────────────────

@@ -1,36 +1,31 @@
-FROM ubuntu:22.04
+# ── Stage 1: build ──────────────────────────────────────────────
+FROM ubuntu:22.04 AS build
 
 RUN apt-get update && apt-get install -y \
         gcc \
         libc6-dev \
-        socat \
         binutils \
-        python3 \
-        python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install flask 2>/dev/null || \
-    pip3 install --break-system-packages flask
-
-RUN useradd -m -s /bin/bash ctf
-
-WORKDIR /home/ctf
+WORKDIR /build
 COPY shanks.c .
-COPY entrypoint.sh .
-COPY splash.py .
-COPY static ./static
 
 RUN gcc -O1 -o shanks shanks.c \
         -fstack-protector-all \
         -Wl,-z,relro,-z,now \
         -pie -fPIE \
         -U_FORTIFY_SOURCE \
-    && strip --strip-all shanks \
-    && rm shanks.c \
-    && chmod 755 shanks entrypoint.sh splash.py \
-    && chown -R root:ctf /home/ctf \
-    && chmod 750 /home/ctf
+    && strip --strip-all shanks
 
-EXPOSE 8019 5000
+# ── Stage 2: runtime ───────────────────────────────────────────
+FROM registry.digitalocean.com/infodays-registry/base:pwn
 
-CMD ["bash", "-c", "python3 /home/ctf/splash.py & exec /home/ctf/entrypoint.sh"]
+WORKDIR /home/ctf
+COPY --from=build /build/shanks .
+COPY entrypoint.sh .
+RUN chmod 755 shanks entrypoint.sh
+
+USER 1000
+EXPOSE 1337
+
+ENTRYPOINT ["./entrypoint.sh"]

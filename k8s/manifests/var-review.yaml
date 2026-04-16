@@ -1,0 +1,60 @@
+# Template — replace var-review, Pwn, 1337, NODE1337, IMAGE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: var-review
+  namespace: ctfd
+  labels:
+    app: var-review
+    category: Pwn
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: var-review
+  template:
+    metadata:
+      labels:
+        app: var-review
+        category: Pwn
+    spec:
+      containers:
+      - name: var-review
+        image: registry.digitalocean.com/infodays-registry/var-review:latest
+        ports:
+        - containerPort: 1337
+        env:
+        - name: FLAG
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: var-review
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: var-review
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: var-review
+  ports:
+  - port: 1337
+    targetPort: 1337
+    nodePort: NODE1337

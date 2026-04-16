@@ -1,0 +1,60 @@
+# Template — replace stadium-ir, Forensics, 2222, NODE2222, IMAGE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stadium-ir
+  namespace: ctfd
+  labels:
+    app: stadium-ir
+    category: Forensics
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: stadium-ir
+  template:
+    metadata:
+      labels:
+        app: stadium-ir
+        category: Forensics
+    spec:
+      containers:
+      - name: stadium-ir
+        image: registry.digitalocean.com/infodays-registry/stadium-ir:latest
+        ports:
+        - containerPort: 2222
+        env:
+        - name: FLAG
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: stadium-ir
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stadium-ir
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: stadium-ir
+  ports:
+  - port: 2222
+    targetPort: 2222
+    nodePort: NODE2222

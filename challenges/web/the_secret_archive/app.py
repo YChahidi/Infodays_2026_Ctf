@@ -130,4 +130,4 @@ def debug():
 
 if __name__ == "__main__":
     # Running on 0.0.0.0 to allow Docker port mapping
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)

@@ -63,12 +63,13 @@ def init_db():
         c.executemany('INSERT INTO users VALUES (?,?,?,?,?)', users)
     
     # Check if decisions exist
+    flag1 = os.environ.get('FLAG1', 'INFODAYS{G4D_C0M80_W1TH_7R1CKS_2030}')
     c.execute("SELECT COUNT(*) FROM decisions")
     if c.fetchone()[0] == 0:
-        c.execute("""INSERT INTO decisions 
-                     (id, match_id, referee_id, decision_data, status, approved_by, created_at) 
-                     VALUES (100, 'FINAL_2030', 1, '{"result": "Morocco wins", "notes": "FLAG: INFODAYS{G4D_C0M80_W1TH_7R1CKS_2030}"}', 'pending', NULL, ?)""",
-                     (int(time.time()),))
+        c.execute("""INSERT INTO decisions
+                     (id, match_id, referee_id, decision_data, status, approved_by, created_at)
+                     VALUES (100, 'FINAL_2030', 1, ?, 'pending', NULL, ?)""",
+                     (json.dumps({"result": "Morocco wins", "notes": f"FLAG: {flag1}"}), int(time.time()),))
     
     conn.commit()
     conn.close()
@@ -469,13 +470,13 @@ def flag():
     
     
     if sql_injection:
-        flags.append("INFODAYS{SQL_INJECTION_GRAPHQL_2030}")
-    
+        flags.append(os.environ.get('FLAG2', 'INFODAYS{SQL_INJECTION_GRAPHQL_2030}'))
+
     if ssti:
-        flags.append("INFODAYS{JINJA2_SSTI_W1TH_GRAPHQL_2030}")
-    
+        flags.append(os.environ.get('FLAG3', 'INFODAYS{JINJA2_SSTI_W1TH_GRAPHQL_2030}'))
+
     if traversal:
-        flags.append("INFODAYS{P4TH_TR4V3RSAL_BACKUP_2030}")
+        flags.append(os.environ.get('FLAG4', 'INFODAYS{P4TH_TR4V3RSAL_BACKUP_2030}'))
     
     if flags:
         return "\n".join(flags)
@@ -515,4 +516,4 @@ if __name__ == '__main__':
         f.write("Fake backup data")
     
     init_db()
-    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
+    app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)

@@ -1,0 +1,60 @@
+# Template — replace stadium-soc, Forensics, 8080, NODE8080, IMAGE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stadium-soc
+  namespace: ctfd
+  labels:
+    app: stadium-soc
+    category: Forensics
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: stadium-soc
+  template:
+    metadata:
+      labels:
+        app: stadium-soc
+        category: Forensics
+    spec:
+      containers:
+      - name: stadium-soc
+        image: registry.digitalocean.com/infodays-registry/stadium-soc:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: FLAG
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: stadium-soc
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stadium-soc
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: stadium-soc
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: NODE8080

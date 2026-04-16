@@ -90,5 +90,4 @@ def code_search():
     return render_template_string(TEMPLATE, message=message)
 
 if __name__ == '__main__':
-    # Running on port 8005 as configured in your docker-compose
-    app.run(host='0.0.0.0', port=8005)
+    app.run(host='0.0.0.0', port=8080)

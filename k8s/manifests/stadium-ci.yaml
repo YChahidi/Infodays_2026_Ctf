@@ -1,0 +1,60 @@
+# Template — replace stadium-ci, Web, 8080, NODE8080, IMAGE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stadium-ci
+  namespace: ctfd
+  labels:
+    app: stadium-ci
+    category: Web
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: stadium-ci
+  template:
+    metadata:
+      labels:
+        app: stadium-ci
+        category: Web
+    spec:
+      containers:
+      - name: stadium-ci
+        image: registry.digitalocean.com/infodays-registry/stadium-ci:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: FLAG
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: stadium-ci
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stadium-ci
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: stadium-ci
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: NODE8080

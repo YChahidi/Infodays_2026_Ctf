@@ -13,4 +13,4 @@ echo -n "${FLAG}" > /home/ctf/flag.txt
 chmod 644 /home/ctf/flag.txt
 unset FLAG
 
-exec socat TCP-LISTEN:8019,reuseaddr,fork EXEC:./shanks
+exec socat TCP-LISTEN:1337,reuseaddr,fork EXEC:./shanks

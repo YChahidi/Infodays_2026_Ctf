@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 def init():
     # Connect to the database file
@@ -37,7 +38,8 @@ def init():
     
     # 3. Create the Secret Table for the Flag
     cursor.execute('CREATE TABLE secret_scout_notes (flag TEXT)')
-    cursor.execute("INSERT INTO secret_scout_notes VALUES ('INFODAYS{SQLI_CH4R_N0_5P4C3_2026}')")
+    flag = os.environ.get('FLAG', 'INFODAYS{SQLI_CH4R_N0_5P4C3_2026}')
+    cursor.execute("INSERT INTO secret_scout_notes VALUES (?)", (flag,))
     
     conn.commit()
     conn.close()

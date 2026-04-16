@@ -1,18 +1,23 @@
-FROM python:3.11-slim
+FROM registry.digitalocean.com/infodays-registry/base:web
 
-WORKDIR /app
-
-RUN apt-get update && apt-get install -y --no-install-recommends xxd && rm -rf /var/lib/apt/lists/*
+USER root
+RUN apk add --no-cache xxd
+USER 1000
 
 COPY requirements.txt .
+
+USER root
 RUN pip install --no-cache-dir -r requirements.txt
+USER 1000
 
 COPY app.py .
 COPY templates ./templates
 COPY static ./static
 COPY entrypoint.sh .
+
+USER root
 RUN chmod +x entrypoint.sh
+USER 1000
 
-EXPOSE 5000
-
+EXPOSE 8080
 ENTRYPOINT ["./entrypoint.sh"]

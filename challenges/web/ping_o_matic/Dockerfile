@@ -1,15 +1,16 @@
-FROM python:3.9-slim
+FROM registry.digitalocean.com/infodays-registry/base:web
 
-WORKDIR /app
+USER root
+RUN apk add --no-cache iputils-ping
+USER 1000
+
 COPY app.py .
 COPY static ./static
-RUN pip install flask
+COPY entrypoint.sh .
 
-# Install ping command
-RUN apt-get update && apt-get install -y iputils-ping && rm -rf /var/lib/apt/lists/*
+USER root
+RUN chmod +x entrypoint.sh
+USER 1000
 
-# Create flag file
-RUN echo "INFODAYS{CMD_INJ3CT10N_W4F_BYP4SS_2026}" > /flag.txt
-
-EXPOSE 5000
-CMD ["python", "app.py"]
+EXPOSE 8080
+ENTRYPOINT ["./entrypoint.sh"]

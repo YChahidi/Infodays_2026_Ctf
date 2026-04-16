@@ -1,9 +1,12 @@
-FROM python:3.9-slim
-RUN useradd -m ctfuser
-WORKDIR /home/ctfuser
-RUN pip install flask
+FROM registry.digitalocean.com/infodays-registry/base:web
+
 COPY app.py .
 COPY static ./static
-USER ctfuser
-EXPOSE 5000
-CMD ["python", "app.py"]
+COPY entrypoint.sh .
+
+USER root
+RUN chmod +x entrypoint.sh
+USER 1000
+
+EXPOSE 8080
+ENTRYPOINT ["./entrypoint.sh"]
