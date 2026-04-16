@@ -82,7 +82,6 @@ def changelog():
             <li>2026-02-14: Added XOR layer to file viewer for path obfuscation</li>
             <li>2026-01-10: Moved sensitive archive to /opt/archive/classified/</li>
         </ul>
-        <!-- dev note: cipher=0x17, verify with: echo "flag.txt" | xortool -->
         <!-- backup still accessible via /view with encoded path -->
     </body>
     ''')
