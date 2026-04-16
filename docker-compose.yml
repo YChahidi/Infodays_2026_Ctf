@@ -127,6 +127,14 @@ services:
       - ctfd_net
     restart: always
 
+  stadium-ir:
+    build: ./challenges/blue-team/stadium_ir
+    ports:
+      - "2222:22"
+    networks:
+      - ctfd_net
+    restart: always
+
 
 
 
