@@ -3,7 +3,17 @@ import socket
 def start_server():
     # The correct 11-hex code from the Agadir hash
     SECRET_CODE = "a25fd3c8373"
-    FLAG = "INFODAYS{4G4D1R_ST3G4N0GR4PHY_M4ST3R_2030}"
+    
+    # Read flag from file
+    try:
+        with open('flag.txt', 'r') as f:
+            FLAG = f.read().strip()
+    except FileNotFoundError:
+        print("Error: flag.txt file not found!")
+        return
+    except Exception as e:
+        print(f"Error reading flag.txt: {e}")
+        return
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Bind to all interfaces on port 1234
