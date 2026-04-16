@@ -101,6 +101,24 @@ services:
       - ctfd_net
     restart: always
 
+  coach-gpt:
+    build: ./challenges/llm-mcp/coach_gpt_jailbreak
+    ports:
+      - "8013:8013"
+    networks:
+      - ctfd_net
+    restart: always
+
+  referee-briefing:
+    build: ./challenges/llm-mcp/referee_briefing
+    env_file:
+      - ./challenges/llm-mcp/referee_briefing/.env
+    ports:
+      - "8014:8008"
+    networks:
+      - ctfd_net
+    restart: always
+
   ot-scada-medport:
     build: ./challenges/ot-scada/agadir_medport
     ports:
