@@ -2,23 +2,13 @@
 \usepackage[margin=1.5cm,landscape]{geometry}
 \usepackage{booktabs}
 \usepackage{longtable}
-\usepackage{xcolor}
-\usepackage{colortbl}
-\usepackage{hyperref}
 \usepackage{array}
 
-\definecolor{easy}{HTML}{27AE60}
-\definecolor{medium}{HTML}{F39C12}
-\definecolor{hard}{HTML}{E74C3C}
-\definecolor{vhard}{HTML}{8E44AD}
-\definecolor{insane}{HTML}{2C3E50}
-\definecolor{rowgray}{HTML}{F5F5F5}
-
-\newcommand{\easy}{\textcolor{easy}{\textbf{Easy}}}
-\newcommand{\medium}{\textcolor{medium}{\textbf{Medium}}}
-\newcommand{\hard}{\textcolor{hard}{\textbf{Hard}}}
-\newcommand{\vhard}{\textcolor{vhard}{\textbf{Very Hard}}}
-\newcommand{\insane}{\textcolor{insane}{\textbf{Insane}}}
+\newcommand{\easy}{\textbf{Easy}}
+\newcommand{\medium}{\textbf{Medium}}
+\newcommand{\hard}{\textbf{Hard}}
+\newcommand{\vhard}{\textbf{Very Hard}}
+\newcommand{\insane}{\textbf{Insane}}
 
 \title{\Huge\bfseries Infodays 2026 --- CTF Challenge Catalog}
 \author{SaamNoLimits}
@@ -33,7 +23,6 @@
 
 \vspace{0.8cm}
 
-\rowcolors{2}{rowgray}{white}
 \begin{longtable}{>{\raggedright}p{0.5cm} >{\raggedright}p{3.5cm} >{\raggedright}p{2.2cm} >{\raggedright}p{10cm} p{1.2cm} >{\raggedright\arraybackslash}p{1.8cm}}
 \toprule
 \textbf{\#} & \textbf{Challenge} & \textbf{Category} & \textbf{Description} & \textbf{Flags} & \textbf{Difficulty} \\
@@ -47,51 +36,51 @@
 \endfoot
 
 %% ── WEB ──────────────────────────────────────────
-1  & VIP Access              & Web        & Base64 cookie tampering --- flip \texttt{is\_admin} to escalate privileges        & 1 & \easy     \\
-2  & The Secret Archive      & Web        & Hardcoded credentials in \texttt{robots.txt}, XOR+Base64 path traversal bypass    & 1 & \easy     \\
-3  & Ping-o-Matic            & Web        & OS command injection with WAF bypass (\texttt{\%0a}, wildcards, non-blacklisted cmds) & 1 & \hard  \\
-4  & Scout Database          & Web        & Blind SQLi with strict WAF --- bypass spaces/quotes via \texttt{/**/} comments    & 1 & \hard     \\
-5  & VAR Check Bro           & Web        & SSRF filter bypass (\texttt{0.0.0.0}) chained with Jinja2 SSTI RCE               & 1 & \hard     \\
-6  & Stadium CI              & Web        & URL parser differential (CVE-2024-27198 style) auth bypass                       & 1 & \hard     \\
-7  & Referee Decision System & Web        & Multi-vector: GraphQL introspection, JWT, SSTI, pickle deserialization            & 3 & \hard     \\
-8  & Man City                & Web        & 8-flag progressive chain: HTML leak $\to$ SQLi $\to$ SSTI $\to$ LFI $\to$ pickle $\to$ JWT & 8 & \insane \\
-9  & Stadium DeFi            & Web3       & Solidity reentrancy exploit --- drain treasury to unlock trophy vault             & 1 & \vhard    \\
+1  & VIP Access              & Web        & Cookie-based authentication bypass                                                & 1 & \easy     \\
+2  & The Secret Archive      & Web        & Restricted file archive with layered access control                               & 1 & \easy     \\
+3  & Ping-o-Matic            & Web        & Network ping utility with input filtering                                         & 1 & \hard  \\
+4  & Scout Database          & Web        & Player registration database with strict input validation                         & 1 & \hard     \\
+5  & VAR Check Bro           & Web        & Video assistant referee with internal review service                              & 1 & \hard     \\
+6  & Stadium CI              & Web        & Continuous integration console with authentication layer                         & 1 & \hard     \\
+7  & Referee Decision System & Web        & Multi-vector match decision management system                                    & 3 & \hard     \\
+8  & Man City                & Web        & Progressive multi-vulnerability web application                                   & 8 & \insane \\
+9  & Stadium DeFi            & Web3       & Smart contract betting platform on Ethereum                                      & 1 & \vhard    \\
 
 %% ── PWN ──────────────────────────────────────────
-10 & VAR Review              & Pwn        & Format string vulnerability at offset 7 to leak the flag from stack              & 1 & \medium   \\
-11 & VAR Replay Buffer       & Pwn        & Stripped 64-bit ELF with full mitigations (ASLR, DEP, canaries)                  & 1 & \hard     \\
-12 & SHANKS                  & Pwn        & Heap exploit: UAF leak + overflow to hijack function pointer (tcache, PIE bypass) & 1 & \insane   \\
+10 & VAR Review              & Pwn        & Binary with improper string handling                                             & 1 & \medium   \\
+11 & VAR Replay Buffer       & Pwn        & Hardened replay buffer manager with hidden functionality                         & 1 & \hard     \\
+12 & SHANKS                  & Pwn        & Pirate crew roster manager with heap memory bugs                                 & 1 & \insane   \\
 
 %% ── REVERSE ──────────────────────────────────────
-13 & Legends Gate            & Reverse    & Anti-debug (ptrace) + static XOR-encrypted password recovery                     & 1 & \medium   \\
-14 & Tournament Bracket      & Reverse    & 3-stage: XOR passphrase $\to$ custom stack-VM $\to$ 16-var linear system (Z3)    & 3 & \insane   \\
-15 & VAR Mobile Companion    & Reverse    & Android APK with 5 layers: plaintext $\to$ XOR $\to$ AES/CBC $\to$ custom VM     & 5 & \insane   \\
+13 & Legends Gate            & Reverse    & Protected VIP stadium gate binary                                                & 1 & \medium   \\
+14 & Tournament Bracket      & Reverse    & Three-stage tournament progression binary                                        & 3 & \insane   \\
+15 & VAR Mobile Companion    & Reverse    & Android mobile companion app with layered secrets                                 & 5 & \insane   \\
 
 %% ── CRYPTO ───────────────────────────────────────
-16 & Coach Formation         & Crypto     & LCG seed recovery from known-plaintext pairs                                     & 1 & \vhard    \\
-17 & Cipher Championship     & Crypto     & 3 rounds: repeating-key XOR $\to$ RSA cube-root $\to$ RSA Wiener's attack        & 3 & \insane   \\
-18 & VAR Override            & Crypto     & ECDSA nonce leak $\to$ lattice HNP (LLL reduction) $\to$ AES-GCM decrypt         & 1 & \insane   \\
+16 & Coach Formation         & Crypto     & Custom cipher with known-plaintext pairs                                         & 1 & \vhard    \\
+17 & Cipher Championship     & Crypto     & Three-round progressive cryptography championship                                & 3 & \insane   \\
+18 & VAR Override            & Crypto     & ECDSA signature verification system with encrypted flag                          & 1 & \insane   \\
 
 %% ── LLM / MCP ────────────────────────────────────
-19 & Coach GPT Jailbreak     & LLM        & Prompt injection + output filter bypass to extract hidden flags                  & 2 & \medium   \\
-20 & Referee Briefing        & LLM / MCP  & MCP path traversal (user flag) + eval sandbox escape + SUID privesc (root flag)  & 2 & \hard     \\
+19 & Coach GPT Jailbreak     & LLM        & AI coaching assistant with hardened output filters                               & 2 & \medium   \\
+20 & Referee Briefing        & LLM / MCP  & MCP-powered referee briefing tool server                                         & 2 & \hard     \\
 
 %% ── OT / SCADA ───────────────────────────────────
-21 & Ait Baha Nuclear        & OT/SCADA   & HMI + unauthenticated Modbus TCP PLC register read/write                         & 3 & \medium   \\
-22 & Agadir Medport          & OT/SCADA   & Unauthenticated MQTT broker --- topic enumeration + ACL bypass                   & 3 & \medium   \\
+21 & Ait Baha Nuclear        & OT/SCADA   & Nuclear facility HMI with industrial control system                              & 3 & \medium   \\
+22 & Agadir Medport          & OT/SCADA   & Maritime port IoT messaging broker                                               & 3 & \medium   \\
 
 %% ── OSINT ────────────────────────────────────────
-23 & KDB Scouting Report     & OSINT      & 4-layer image forensics: EXIF $\to$ XMP base64 $\to$ appended ZIP $\to$ password ZIP & 4 & \insane \\
-24 & Venue Recon             & OSINT      & EXIF base64 $\to$ string reverse $\to$ Twitter thread $\to$ building ID          & 1 & \medium   \\
+23 & KDB Scouting Report     & OSINT      & Multi-layer image with hidden intelligence                                        & 4 & \insane \\
+24 & Venue Recon             & OSINT      & Identify a location from an image and its metadata                               & 1 & \medium   \\
 
 %% ── STEGANOGRAPHY ────────────────────────────────
-25 & The VIP Invitation      & Stego      & 2-layer: steghide extract (password in filename) $\to$ blue-channel LSB          & 1 & \hard     \\
-26 & Pearl Binary Signature  & Stego      & 11$\times$11 LSB mosaic $\to$ SHA-256 hash match (city name) $\to$ listener      & 1 & \hard     \\
+25 & The VIP Invitation      & Stego      & Stadium invitation image with hidden data                                        & 1 & \hard     \\
+26 & Pearl Binary Signature  & Stego      & Image mosaic encoding a binary signature                                         & 1 & \hard     \\
 
 %% ── BLUE TEAM ────────────────────────────────────
-27 & Malware Lab Stadium     & Blue Team  & Static analysis of ELF64 beacon --- 10 questions, 70\% pass threshold            & 1 & \medium   \\
-28 & Stadium IR              & Blue Team  & SSH forensics --- find persistence mechanism + recover staged payload             & 2 & \hard     \\
-29 & Stadium SOC             & Blue Team  & 40-question SOC triage across 7 log files --- IOC + MITRE ATT\&CK mapping        & 1 & \medium   \\
+27 & Malware Lab Stadium     & Blue Team  & Malware sample analysis lab --- 10 questions, 70\% pass threshold                & 1 & \medium   \\
+28 & Stadium IR              & Blue Team  & Compromised server incident response via SSH                                     & 2 & \hard     \\
+29 & Stadium SOC             & Blue Team  & SOC analyst triage across 7 evidence files --- 40 questions                      & 1 & \medium   \\
 
 \end{longtable}
 
