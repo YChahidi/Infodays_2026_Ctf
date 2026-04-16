@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir flask
 # Copy only the essential application files
 COPY app.py .
 COPY news.txt .
+COPY static ./static
 
 # THE DYNAMIC PART:
 # Copy the flag from your local folder to /tmp/ to force path traversal

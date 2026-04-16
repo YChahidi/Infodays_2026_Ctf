@@ -24,13 +24,22 @@ def session_check(f):
 
 @app.route('/')
 def index():
-    return render_template_string('''
-    <body style="background:#0a0a0a;color:#0f0;font-family:monospace;text-align:center;padding:50px;">
-        <h1>🔐 Secret Archive Gateway</h1>
-        <p>Restricted Management Interface - InfoDays 2026</p>
-        <a href="/login_page" style="color:#0f0;border:1px solid #0f0;padding:10px;text-decoration:none;">[ ENTER ARCHIVE ]</a>
-    </body>
-    ''')
+    return '''<!doctype html>
+<html><head><meta charset="utf-8"><title>Secret Archive</title>
+<style>*{margin:0;padding:0}body{background:#050a12;overflow:hidden}
+.s{width:100vw;height:100vh}
+.s img{width:100%;height:100%;object-fit:cover}
+.o{position:fixed;inset:0;background:linear-gradient(to bottom,rgba(5,10,18,.1),rgba(5,10,18,.05) 40%,rgba(5,10,18,.5) 80%,rgba(5,10,18,.95));pointer-events:none}
+.t{position:fixed;bottom:60px;width:100%;text-align:center;z-index:2;font-family:Inter,system-ui,sans-serif}
+.t h1{font-size:48px;font-weight:800;color:#fff;text-shadow:0 2px 40px rgba(0,0,0,.8)}
+.t h1 span{color:#5e9fff}
+.t p{color:#8899b5;font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+</style></head><body>
+<div class="s"><img src="/static/0iq.jpeg" alt=""></div>
+<div class="o"></div>
+<div class="t"><h1>&#x1F512; <span>Secret</span> Archive</h1>
+<p>Restricted Management Interface</p></div>
+</body></html>'''
 
 @app.route('/login_page')
 def login_page():
