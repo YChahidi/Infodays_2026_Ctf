@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stadium FC — SOC Lab Results</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,sans-serif;color:#e0e0e0;min-height:100vh;background:#0a0a0a}
+  .bg-video{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;object-fit:cover;opacity:.12;pointer-events:none}
+  .container{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:30px 20px}
+  h1{
+    text-align:center;font-size:1.6em;margin-bottom:6px;color:#00ff88;
+    text-shadow:0 0 20px rgba(0,255,136,.2);letter-spacing:1px;
+    text-transform:uppercase;font-weight:600;
+  }
+  .score-box{
+    text-align:center;margin:24px auto;padding:20px;border-radius:6px;
+    max-width:400px;backdrop-filter:blur(10px);
+  }
+  .score-box.pass{background:rgba(0,255,136,.06);border:1px solid #00ff8844}
+  .score-box.fail{background:rgba(255,68,68,.06);border:1px solid #ff444444}
+  .score-num{font-size:2.6em;font-weight:700;font-family:'Courier New',monospace}
+  .score-box.pass .score-num{color:#00ff88}
+  .score-box.fail .score-num{color:#ff4444}
+  .score-label{font-size:.9em;color:#666;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+  .flag-box{
+    text-align:center;margin:20px auto;padding:16px 20px;border-radius:4px;
+    background:rgba(0,255,136,.05);border:1px solid #00ff8833;max-width:700px;
+    font-family:'Courier New',monospace;font-size:1em;word-break:break-all;color:#00ff88;
+  }
+  .flag-box .label{color:#556;font-size:.8em;display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+  .results-table{width:100%;border-collapse:collapse;margin-top:24px}
+  .results-table th{
+    text-align:left;padding:8px 10px;border-bottom:1px solid #1a1a2e;
+    color:#556;font-size:.75em;text-transform:uppercase;letter-spacing:1px;font-weight:600;
+  }
+  .results-table td{padding:8px 10px;border-bottom:1px solid #111;font-size:.85em}
+  .results-table tr.correct td{color:#667}
+  .results-table tr.wrong td{color:#cc4444}
+  .status-cell{text-align:center;font-size:.8em;font-weight:700;letter-spacing:1px}
+  .status-cell.ok{color:#00cc6a}
+  .status-cell.fail{color:#cc3333}
+  .diff-badge{display:inline-block;padding:1px 6px;border-radius:2px;font-size:.68em;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+  .diff-Easy{background:#00ff8815;color:#00cc6a;border:1px solid #00ff8830}
+  .diff-Medium{background:#ffaa0015;color:#cc8800;border:1px solid #ffaa0030}
+  .diff-Hard{background:#ff444415;color:#cc3333;border:1px solid #ff444430}
+  .answer-col{font-family:'Courier New',monospace;font-size:.8em}
+  .back-btn{
+    display:inline-block;margin-top:24px;padding:8px 24px;border-radius:3px;
+    background:#111;border:1px solid #222;color:#667;text-decoration:none;
+    font-size:.85em;transition:.2s;text-transform:uppercase;letter-spacing:.5px;
+  }
+  .back-btn:hover{background:#1a1a2e;border-color:#00aaff44;color:#00aaff}
+  footer{text-align:center;color:#333;font-size:.72em;padding:30px 0;letter-spacing:.5px}
+</style>
+</head>
+<body>
+<img src="/static/background.gif" class="bg-video" alt="">
+<div class="container">
+  <h1>SOC Lab &mdash; Results</h1>
+
+  <div class="score-box {{ 'pass' if passed else 'fail' }}">
+    <div class="score-num">{{score}} / {{total}}</div>
+    <div class="score-label">{{pct}}% &mdash; {% if passed %}Passed{% else %}Failed (need 70%){% endif %}</div>
+  </div>
+
+  {% if flag %}
+  <div class="flag-box">
+    <span class="label">Lab Cleared</span>
+    {{flag}}
+  </div>
+  {% else %}
+  <div style="text-align:center;color:#884444;margin:15px 0;font-size:.9em">Review incorrect answers below and retry.</div>
+  {% endif %}
+
+  <table class="results-table">
+    <thead>
+      <tr>
+        <th>#</th><th>Status</th><th>Level</th><th>Question</th><th>Your Answer</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for r in results %}
+      <tr class="{{ 'correct' if r.correct else 'wrong' }}">
+        <td style="font-family:monospace;color:#444">{{"%02d"|format(loop.index)}}</td>
+        <td class="status-cell {{ 'ok' if r.correct else 'fail' }}">{% if r.correct %}OK{% else %}FAIL{% endif %}</td>
+        <td><span class="diff-badge diff-{{r.difficulty}}">{{r.difficulty}}</span></td>
+        <td>{{r.question[:80]}}{% if r.question|length > 80 %}...{% endif %}</td>
+        <td class="answer-col">{{r.user_answer or '&mdash;'}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div style="text-align:center">
+    <a href="/" class="back-btn">Retry</a>
+  </div>
+  <footer>STADIUM FC SOC LAB &mdash; INFODAYS 2026</footer>
+</div>
+</body>
+</html>

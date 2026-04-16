@@ -143,6 +143,30 @@ services:
       - ctfd_net
     restart: always
 
+  web-referee-decision:
+    build: ./challenges/web/referee_decision_system
+    ports:
+      - "8016:5000"
+    networks:
+      - ctfd_net
+    restart: always
+
+  stadium-soc:
+    build: ./challenges/blue-team/stadium_soc
+    ports:
+      - "8017:5000"
+    networks:
+      - ctfd_net
+    restart: always
+
+  man-city:
+    build: ./challenges/web/man_city
+    ports:
+      - "8018:5000"
+    networks:
+      - ctfd_net
+    restart: always
+
 
 
 

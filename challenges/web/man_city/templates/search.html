@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Search — Man City FC{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Player Search</h1>
+  <div class="card">
+    <form method="GET" style="display:flex;gap:8px">
+      <input type="text" name="q" value="{{ query }}" placeholder="Search by name..." style="flex:1">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+  {% if results is not none %}
+  <div class="card">
+    {% if results %}
+    <table>
+      <thead><tr><th>ID</th><th>Name</th><th>Position</th><th>Number</th></tr></thead>
+      <tbody>
+      {% for r in results %}
+      <tr>
+        <td>{{ r[0] }}</td>
+        <td>{{ r[1] }}</td>
+        <td>{{ r[2] }}</td>
+        <td>{{ r[3] }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p style="color:#556">No results found.</p>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

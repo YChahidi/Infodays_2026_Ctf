@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Man City FC{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Dashboard</h1>
+  <div class="card">
+    <p>Logged in as: <strong>{{ user }}</strong> ({{ role }})</p>
+  </div>
+  {% if flag3 %}
+  <div class="card" style="border-color:#4ade8044">
+    <h2 style="color:#4ade80">Admin Panel</h2>
+    <p style="font-family:monospace;color:#4ade80;word-break:break-all">{{ flag3 }}</p>
+  </div>
+  {% else %}
+  <div class="card">
+    <p style="color:#556">You do not have admin privileges. Contact your administrator.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

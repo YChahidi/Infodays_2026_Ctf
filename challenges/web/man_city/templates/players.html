@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Players — Man City FC{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Squad</h1>
+  <div class="card">
+    <table>
+      <thead><tr><th>#</th><th>Name</th><th>Position</th><th>Number</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for p in players %}
+      <tr>
+        <td>{{ p['id'] }}</td>
+        <td>{{ p['name'] }}</td>
+        <td>{{ p['position'] }}</td>
+        <td>{{ p['number'] }}</td>
+        <td>{{ p['status'] }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
