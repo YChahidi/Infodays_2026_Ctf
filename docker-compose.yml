@@ -92,6 +92,23 @@ services:
       - ctfd_net
     restart: always
 
+  ot-scada:
+    build: ./challenges/ot-scada/ait_baha_nuclear
+    ports:
+      - "8012:8012"
+      - "5020:5020"
+    networks:
+      - ctfd_net
+    restart: always
+
+  ot-scada-medport:
+    build: ./challenges/ot-scada/agadir_medport
+    ports:
+      - "1884:1883"
+    networks:
+      - ctfd_net
+    restart: always
+
 
 
 

@@ -1,0 +1,23 @@
+# Agadir MedPort — broker ACL.
+#
+# Anonymous clients (the public facing default) may read all agadir/#
+# and $CTF/# telemetry and may publish commands to crane / gate, but
+# CANNOT publish to the ops admin namespace. That namespace is
+# reserved for the "opsadmin" user whose credentials live in an
+# unfortunately retained briefing message. Oops.
+
+# --- anonymous / default ---
+topic read $CTF/#
+topic read agadir/#
+topic write agadir/quay/+/cmd
+topic write agadir/gate/+/cmd
+
+# --- simulator (internal publisher) ---
+user simulator
+topic readwrite $CTF/#
+topic readwrite agadir/#
+
+# --- ops admin (privileged) ---
+user opsadmin
+topic read agadir/#
+topic readwrite agadir/admin/#
