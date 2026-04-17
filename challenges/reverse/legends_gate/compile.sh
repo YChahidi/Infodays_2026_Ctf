@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "[*] Generating secrets..."
-python3 build_secret.py || exit 1
+python3 build_secret.py
 
 echo "[*] Compiling..."
 

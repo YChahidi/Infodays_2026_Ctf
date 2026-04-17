@@ -1,0 +1,1 @@
+gha lance ./compile.sh w haykhdm kolchi
