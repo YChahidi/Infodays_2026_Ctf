@@ -1,0 +1,65 @@
+# Template — Web, 8080, NODE8080, IMAGE — Yami Sukehiro (HTB Yummy-style chain)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yami-sukehiro
+  namespace: ctfd
+  labels:
+    app: yami-sukehiro
+    category: Web
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: yami-sukehiro
+  template:
+    metadata:
+      labels:
+        app: yami-sukehiro
+        category: Web
+    spec:
+      containers:
+      - name: yami-sukehiro
+        image: registry.digitalocean.com/infodays-registry/yami-sukehiro:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: FLAG1
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: yami-sukehiro-user
+        - name: FLAG2
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: yami-sukehiro-root
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yami-sukehiro
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: yami-sukehiro
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: NODE8080

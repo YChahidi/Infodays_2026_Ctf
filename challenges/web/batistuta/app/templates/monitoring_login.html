@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Monitoring — Login</title>
+<style>
+body{background:#0a0a14;color:#ddd;font-family:Helvetica,Arial,sans-serif;margin:0}
+.card{max-width:380px;margin:100px auto;background:#14142a;padding:28px;border:1px solid #2a2440;border-radius:4px}
+h2{color:#8ab4ff;text-align:center;letter-spacing:3px;margin-top:0}
+input{width:100%;box-sizing:border-box;background:#0a0a14;border:1px solid #2a2440;color:#ddd;padding:10px;margin:6px 0}
+button{width:100%;background:#2a2a4a;color:#8ab4ff;border:1px solid #4a4a6a;padding:12px;cursor:pointer;letter-spacing:2px}
+#msg{color:#f66;text-align:center;min-height:16px}
+</style></head><body>
+<div class="card">
+  <h2>MONITORING</h2>
+  <p id="msg"></p>
+  <input id="u" placeholder="Username">
+  <input id="p" type="password" placeholder="Password">
+  <button onclick="doLogin()">Sign in</button>
+</div>
+<script>
+// CLIENT-SIDE ONLY auth. If /api/login returns {success:true}, redirect
+// to dashboard. The server always returns {success:false} — attackers
+// intercept and flip the response in their proxy, then the dashboard
+// loads because it has no server-side auth check either.
+async function doLogin(){
+  const r = await fetch('/monitoring/api/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({username: u.value, password: p.value})
+  });
+  const j = await r.json();
+  if (j.success) { location = '/monitoring/dashboard'; }
+  else { msg.textContent = j.reason || 'login failed'; }
+}
+</script></body></html>

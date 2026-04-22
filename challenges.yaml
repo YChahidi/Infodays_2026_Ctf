@@ -91,6 +91,24 @@ challenges:
         nodeport: 30010
     flags: 1
 
+  - name: yami-sukehiro
+    path: challenges/web/yami_sukehiro
+    category: Web
+    type: http
+    base: custom
+    port: 8080
+    nodeport: 30030
+    flags: 2
+
+  - name: batistuta
+    path: challenges/web/batistuta
+    category: Web
+    type: http
+    base: custom
+    port: 8080
+    nodeport: 30031
+    flags: 2
+
   # ── PWN (TCP, port 1337) ─────────────────────────────────────
   - name: var-review
     path: challenges/pwn/var_review

@@ -1,0 +1,35 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Knight Dashboard — Yami Sukehiro</title>
+<style>
+body{background:#0a0a0a;color:#d4c8a0;font-family:Georgia,serif;margin:0}
+.wrap{max-width:1000px;margin:40px auto;padding:20px}
+h1{color:#c0a060;letter-spacing:3px}
+table{width:100%;border-collapse:collapse;margin-top:20px}
+th,td{border:1px solid #3a2a2a;padding:10px;text-align:left}
+th{background:#1a0f0f;color:#c0a060}
+a{color:#c0a060}
+</style></head><body>
+<div class="wrap">
+  <h1>KNIGHT DASHBOARD</h1>
+  <p><a href="/">Home</a> | <a href="/logout">Logout</a></p>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, msg in messages %}<p style="color:{{'#6f6' if category=='success' else '#f66'}}">{{ msg }}</p>{% endfor %}
+  {% endwith %}
+  <table>
+    <tr><th>ID</th><th>Email</th><th>Date</th><th>Time</th><th>People</th><th>Message</th><th>Actions</th></tr>
+    {% for a in appointments %}
+    <tr>
+      <td>{{ a.appointment_id }}</td>
+      <td>{{ a.appointment_email }}</td>
+      <td>{{ a.appointment_date }}</td>
+      <td>{{ a.appointment_time }}</td>
+      <td>{{ a.appointment_people }}</td>
+      <td>{{ a.appointment_message }}</td>
+      <td>
+        <a href="/reminder/{{ a.appointment_id }}">Save ICalendar</a> |
+        <a href="/delete/{{ a.appointment_id }}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div></body></html>
