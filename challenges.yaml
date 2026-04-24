@@ -137,6 +137,15 @@ challenges:
     nodeport: 30013
     flags: 1
 
+  - name: leonel-messi
+    path: challenges/pwn/leonel_messi
+    category: Pwn
+    type: tcp
+    base: custom
+    port: 1337
+    nodeport: 30033
+    flags: 1
+
   # ── REVERSING (static download) ──────────────────────────────
   - name: legends-gate
     path: challenges/reversing/legends_gate
@@ -156,6 +165,15 @@ challenges:
     type: static
     flags: 5
 
+  - name: cr7
+    path: challenges/reversing/cr7
+    category: Reversing
+    type: http
+    base: custom
+    port: 8080
+    nodeport: 30034
+    flags: 1
+
   # ── CRYPTO (static download) ─────────────────────────────────
   - name: coach-formation
     path: challenges/crypto/coach_formation
@@ -173,6 +191,37 @@ challenges:
     path: challenges/crypto/var_override
     category: Crypto
     type: static
+    flags: 1
+
+  - name: neymar
+    path: challenges/crypto/neymar
+    category: Crypto
+    type: tcp
+    base: misc
+    port: 1337
+    nodeport: 30032
+    flags: 1
+
+  - name: kdb
+    path: challenges/crypto/kdb
+    category: Crypto
+    type: tcp
+    base: custom
+    port: 9001
+    nodeport: 30035
+    flags: 1
+
+  - name: haaland
+    path: challenges/web/haaland
+    category: Blockchain
+    type: http
+    base: custom
+    port: 8080
+    nodeport: 30036
+    extra_ports:
+      - name: rpc
+        port: 8545
+        nodeport: 30037
     flags: 1
 
   # ── MISC (mixed) ─────────────────────────────────────────────

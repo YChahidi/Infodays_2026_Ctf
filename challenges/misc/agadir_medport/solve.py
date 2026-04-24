@@ -24,8 +24,8 @@ import time
 
 import paho.mqtt.client as mqtt
 
-HOST = "localhost"
-PORT = 1884
+HOST = "challenges.infodays.net"
+PORT = 32059
 FLAG_RE = re.compile(r"INFODAYS\{[^}]+\}")
 
 flags = {"f1": None, "f2": None, "f3": None}
