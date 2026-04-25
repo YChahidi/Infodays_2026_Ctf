@@ -1,0 +1,23 @@
+
+============================================================
+COACH FORMATION - HARD MODE (STABLE)
+============================================================
+
+Encrypted score:
+8355587028004226
+
+Encrypted flag:
+XZOIEMTY{HIL_X9FC3J3_JTS_QU2DY_2365}
+
+LCG parameters:
+a = 1103515245
+c = 12345
+m = 2^31
+
+Leakage:
+ks = (LCG_state & 0xFFFF)
+k-step = 3 (decimated stream)
+
+Goal:
+Recover seed and decrypt flag.
+============================================================

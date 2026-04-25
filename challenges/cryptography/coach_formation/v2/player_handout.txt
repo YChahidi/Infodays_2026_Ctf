@@ -1,0 +1,19 @@
+
+============================================================
+FINAL BOSS - COACH FORMATION
+============================================================
+
+Score cipher:
+4259446290123456
+
+Flag cipher:
+GLDMBYWQ{DGLYJ_ZMQQ_JAE_APWNRM}
+
+Constraints:
+- Coupled LCG system (hidden)
+- 16-bit XOR-masked leakage
+- 3-step evolution per character
+
+Goal:
+Recover flag.
+============================================================

@@ -1,0 +1,21 @@
+
+========================================
+FINAL BOSS CTF - COUPLED NONLINEAR SYSTEM
+========================================
+
+Score cipher:
+1ca45f907df73b22c5cbcebbd75dee87
+
+Flag cipher:
+96b98e6aa279f43877d34e2c8e98cfc81fc63de6769b641c6c74f4fdaf82c32866f723
+
+Rules:
+- Coupled nonlinear recurrence system
+- 3-step evolution per character
+- Hidden state (x, y)
+- Byte-wise encryption (mod 256)
+
+Goal:
+Recover flag.
+
+========================================
