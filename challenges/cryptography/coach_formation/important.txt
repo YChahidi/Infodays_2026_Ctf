@@ -1,0 +1,1 @@
+khdam , 7ta v2 but has different logic , v3 still no solve (pc cant handle the bruteforce)
