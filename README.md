@@ -24,16 +24,16 @@ This repository hosts the source, artifacts, and writeups for the Capture The Fl
 | Challenge | Difficulty | Category | Flags | Author | Writeup |
 | --------- | ---------- | -------- | :---: | ------ | ------- |
 | Cipher Championship | Insane | [Crypto](challenges/crypto) | 3 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/crypto/cipher_championship/WRITEUP.md) |
-| Coach Formation | Hard | [Crypto](challenges/crypto) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/crypto/coach_formation/solve.md) |
+| Coach Formation | Hard | [Crypto](challenges/crypto) | 1 | [Youssef Chahidi](https://github.com/YChahidi) | [Writeup](challenges/crypto/coach_formation/solve.md) |
 | KDB | Insane | [Crypto](challenges/crypto) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/crypto/kdb/WRITEUP.md) |
 | Neymar | Insane | [Crypto](challenges/crypto) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/crypto/neymar/WRITEUP.md) |
 | Penalty Oracle | TBA | [Crypto](challenges/crypto) | 1 | [Youssef Chahidi](https://github.com/YChahidi) | [Solver](challenges/crypto/penalty_oracle/solve.py) |
 | Var Override | Extreme | [Crypto](challenges/crypto) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/crypto/var_override/WRITEUP.md) |
 | Malware Lab Stadium | TBA | [Forensics](challenges/forensics) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/forensics/malware_lab_stadium/solve.md) |
-| Pearl Binary Signature | TBA | [Forensics](challenges/forensics) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/forensics/pearl_binary_signature/solve.md) |
+| Pearl Binary Signature | TBA | [Forensics](challenges/forensics) | 1 | [Youssef Chahidi](https://github.com/YChahidi) | [Writeup](challenges/forensics/pearl_binary_signature/solve.md) |
 | Stadium IR | TBA | [Forensics](challenges/forensics) | 2 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/forensics/stadium_ir/solve.md) |
 | Stadium SOC | Medium | [Forensics](challenges/forensics) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/forensics/stadium_soc/solve.md) |
-| The VIP Invitation | Hard | [Forensics](challenges/forensics) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/forensics/the_vip_invitation/solve.md) |
+| The VIP Invitation | Hard | [Forensics](challenges/forensics) | 1 | [Youssef Chahidi](https://github.com/YChahidi) | [Writeup](challenges/forensics/the_vip_invitation/solve.md) |
 | Agadir MedPort | Hard | [Misc](challenges/misc) | 3 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/misc/agadir_medport/solve.md) |
 | Aït Baha Nuclear | Hard | [Misc](challenges/misc) | 3 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/misc/ait_baha_nuclear/solve.md) |
 | Coach GPT Jailbreak | Hard | [Misc](challenges/misc) | 2 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/misc/coach_gpt_jailbreak/solve.md) |
@@ -49,7 +49,7 @@ This repository hosts the source, artifacts, and writeups for the Capture The Fl
 | CR7 | Hard | [Reversing](challenges/reversing) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/reversing/cr7/WRITEUP.md) |
 | Formation | TBA | [Reversing](challenges/reversing) | 1 | [Youssef Chahidi](https://github.com/YChahidi) | [Solver](challenges/reversing/formation/solve/solve.py) |
 | General Mbappé | Hard | [Reversing](challenges/reversing) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/reversing/general_mbappe/WRITEUP.md) |
-| Legends Gate | Hard | [Reversing](challenges/reversing) | 1 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/reversing/legends_gate/solve.md) |
+| Legends Gate | Hard | [Reversing](challenges/reversing) | 1 | [Youssef Chahidi](https://github.com/YChahidi) | [Writeup](challenges/reversing/legends_gate/solve.md) |
 | Tournament Bracket | Insane | [Reversing](challenges/reversing) | 3 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/reversing/tournament_bracket/WRITEUP.md) |
 | Var Mobile Companion | Easy → Insane | [Reversing](challenges/reversing) | 5 | [SaamNoLimits](https://github.com/SaamNoLimits) | [Writeup](challenges/reversing/var_mobile_companion/WRITEUP.md) |
 | VIP Access Session Inspector | TBA | [Web](challenges/web) | 1 | [Youssef Chahidi](https://github.com/YChahidi) | [Solver](challenges/web/VIP_Access_Session_Inspector/solve.py) |
