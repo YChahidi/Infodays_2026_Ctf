@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  haaland:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: haaland:lab
+    container_name: haaland
+    restart: unless-stopped
+    environment:
+      FLAG: ${FLAG:-}
+    ports:
+      - "8080:8080"
+      - "8545:8545"

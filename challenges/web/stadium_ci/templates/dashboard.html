@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Stadium CI — Public Dashboard</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #0c2f1e; color: #f4f4f4; max-width: 820px; margin: 40px auto; padding: 20px; }
+        h1 { color: #ffd700; }
+        .card { background: #0f5132; border: 2px solid #ffd700; padding: 22px; border-radius: 6px; margin-bottom: 18px; }
+        .card h2 { margin-top: 0; color: #ffd700; }
+        .ok { color: #7dd87d; }
+        .warn { color: #ffb347; }
+        a { color: #ffd700; }
+        ul { line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <h1>Public Build Dashboard</h1>
+    <p>Signed in as: <strong>{{ role }}</strong></p>
+
+    <div class="card">
+        <h2>Latest pipelines</h2>
+        <ul>
+            <li>Match-day UI — <span class="ok">passed</span> (2 min ago)</li>
+            <li>VAR replay service — <span class="ok">passed</span> (7 min ago)</li>
+            <li>Stadium lighting controller — <span class="warn">flaky</span> (14 min ago)</li>
+            <li>Ticketing gateway — <span class="ok">passed</span> (22 min ago)</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Restricted content</h2>
+        <p>Referee decision reports are published in the
+           <a href="/admin">admin console</a>. VAR room officials only.</p>
+    </div>
+
+    <p><a href="/">&larr; Home</a> · <a href="/logout">Logout</a></p>
+</body>
+</html>

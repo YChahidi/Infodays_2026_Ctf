@@ -3,9 +3,10 @@ import threading
 import base64
 import json
 import re
+import sys
 import time
 
-BASE_URL = "http://localhost:8008"
+BASE_URL = (sys.argv[1].rstrip("/") if len(sys.argv) > 1 else "http://localhost:8008")
 
 # ----------------------------
 # LOGIN

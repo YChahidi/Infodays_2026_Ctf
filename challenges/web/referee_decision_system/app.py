@@ -63,12 +63,13 @@ def init_db():
         c.executemany('INSERT INTO users VALUES (?,?,?,?,?)', users)
     
     # Check if decisions exist
+    flag1 = os.environ.get('FLAG1', 'INFODAYS{G4D_C0M80_W1TH_7R1CKS_2030}')
     c.execute("SELECT COUNT(*) FROM decisions")
     if c.fetchone()[0] == 0:
-        c.execute("""INSERT INTO decisions 
-                     (id, match_id, referee_id, decision_data, status, approved_by, created_at) 
-                     VALUES (100, 'FINAL_2030', 1, '{"result": "Morocco wins", "notes": "FLAG: INFODAYS{G4D_C0M80_W1TH_7R1CKS_2030}"}', 'pending', NULL, ?)""",
-                     (int(time.time()),))
+        c.execute("""INSERT INTO decisions
+                     (id, match_id, referee_id, decision_data, status, approved_by, created_at)
+                     VALUES (100, 'FINAL_2030', 1, ?, 'pending', NULL, ?)""",
+                     (json.dumps({"result": "Morocco wins", "notes": f"FLAG: {flag1}"}), int(time.time()),))
     
     conn.commit()
     conn.close()
@@ -272,32 +273,22 @@ query {
 # Web Routes
 @app.route('/')
 def index():
-    return render_template_string('''
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>FIFA 2030 Referee System</title>
-        <style>
-            body { font-family: monospace; background: #0a0a0a; color: #0f0; padding: 50px; }
-            h1 { color: #ff0; }
-            a { color: #0f0; text-decoration: none; border: 1px solid #0f0; padding: 10px; margin: 5px; display: inline-block; }
-            a:hover { background: #0f0; color: #000; }
-            .container { max-width: 800px; margin: 0 auto; text-align: center; }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>🏆 FIFA 2030 Referee System</h1>
-            <p>Secure Match Decision Management System</p>
-            <p><a href="/login">🔐 Login</a></p>
-            <p><a href="/graphql">📊 GraphQL API</a></p>
-            <p><a href="/report">📄 Generate Report</a></p>
-            <p><a href="/admin/backup">💾 Admin Backup</a></p>
-            <p><a href="/robots.txt">🤖 robots.txt</a></p>
-        </div>
-    </body>
-    </html>
-    ''')
+    return '''<!doctype html>
+<html><head><meta charset="utf-8"><title>Referee Decision System</title>
+<style>*{margin:0;padding:0}body{background:#050a12;overflow:hidden}
+.s{width:100vw;height:100vh}
+.s img{width:100%;height:100%;object-fit:cover}
+.o{position:fixed;inset:0;background:linear-gradient(to bottom,rgba(5,10,18,.1),rgba(5,10,18,.05) 40%,rgba(5,10,18,.5) 80%,rgba(5,10,18,.95));pointer-events:none}
+.t{position:fixed;bottom:60px;width:100%;text-align:center;z-index:2;font-family:Inter,system-ui,sans-serif}
+.t h1{font-size:48px;font-weight:800;color:#fff;text-shadow:0 2px 40px rgba(0,0,0,.8)}
+.t h1 span{color:#5e9fff}
+.t p{color:#8899b5;font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+</style></head><body>
+<div class="s"><img src="/static/evil.gif" alt=""></div>
+<div class="o"></div>
+<div class="t"><h1>&#x1F3C6; <span>Referee</span> Decision System</h1>
+<p>FIFA 2030 Match Management</p></div>
+</body></html>'''
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -479,13 +470,13 @@ def flag():
     
     
     if sql_injection:
-        flags.append("INFODAYS{SQL_INJECTION_GRAPHQL_2030}")
-    
+        flags.append(os.environ.get('FLAG2', 'INFODAYS{SQL_INJECTION_GRAPHQL_2030}'))
+
     if ssti:
-        flags.append("INFODAYS{JINJA2_SSTI_W1TH_GRAPHQL_2030}")
-    
+        flags.append(os.environ.get('FLAG3', 'INFODAYS{JINJA2_SSTI_W1TH_GRAPHQL_2030}'))
+
     if traversal:
-        flags.append("INFODAYS{P4TH_TR4V3RSAL_BACKUP_2030}")
+        flags.append(os.environ.get('FLAG4', 'INFODAYS{P4TH_TR4V3RSAL_BACKUP_2030}'))
     
     if flags:
         return "\n".join(flags)
@@ -525,4 +516,4 @@ if __name__ == '__main__':
         f.write("Fake backup data")
     
     init_db()
-    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
+    app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Bio Editor — Man City FC{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Player Bio Editor</h1>
+  <div class="card">
+    <p style="color:#556;font-size:.85em;margin-bottom:12px">Preview how a player nickname renders on the public profile page.</p>
+    <form method="POST">
+      <div style="margin-bottom:12px">
+        <label style="font-size:.8em;color:#556;display:block;margin-bottom:4px">Nickname</label>
+        <input type="text" name="nickname" placeholder="Enter player nickname..." autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn-primary">Preview</button>
+    </form>
+  </div>
+  {% if output %}
+  <div class="card">
+    {{ output | safe }}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

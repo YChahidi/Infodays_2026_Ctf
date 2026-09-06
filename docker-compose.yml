@@ -1,94 +1,188 @@
+# Infodays 2026 CTF — Local Development Compose
+# Mirrors K8s platform ports (NodePort range 30001-30021)
+# Flag injection via FLAG env var (defaults for local testing)
+
 services:
-  db:
-    image: mariadb:10.5
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_USER: ${CTFD_DB_USER}
-      MYSQL_PASSWORD: ${CTFD_DB_PASSWORD}
-      MYSQL_DATABASE: ${CTFD_DB_NAME}
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - ctfd_net
 
-  redis:
-    image: redis:7-alpine
-    restart: unless-stopped
-    networks:
-      - ctfd_net
+  # ── WEB (HTTP, port 8080) ──────────────────────────────────
 
-
-
-
-
-  web-gallery:
-    build: ./challenges/web/the_secret_archive
-    ports:
-      - "8002:5000"
-    networks:
-      - ctfd_net
-
-  web-ping:
-    build: ./challenges/web/ping_o_matic
-    ports:
-      - "8001:5000"
-    networks:
-      - ctfd_net
-
-  web-cookies:
+  vip-access:
     build: ./challenges/web/VIP_Access_Session_Inspector
     ports:
-      - "8003:5000"
-    networks:
-      - ctfd_net
+      - "30001:8080"
+    environment:
+      - FLAG=infodays{local_vip_access_flag}
+    restart: unless-stopped
 
-  web-sqli:
+  secret-archive:
+    build: ./challenges/web/the_secret_archive
+    ports:
+      - "30002:8080"
+    environment:
+      - FLAG=infodays{local_secret_archive_flag}
+    restart: unless-stopped
+
+  ping-o-matic:
+    build: ./challenges/web/ping_o_matic
+    ports:
+      - "30003:8080"
+    environment:
+      - FLAG=infodays{local_ping_o_matic_flag}
+    restart: unless-stopped
+
+  scout-database:
     build: ./challenges/web/scout_database
     ports:
-      - "8005:8005"
-    networks:
-      - ctfd_net
+      - "30004:8080"
+    environment:
+      - FLAG=infodays{local_scout_database_flag}
+    restart: unless-stopped
 
+  var-check-bro:
+    build: ./challenges/web/var_check_bro
+    ports:
+      - "30005:8080"
+    environment:
+      - FLAG=infodays{local_var_check_bro_flag}
+    restart: unless-stopped
 
-  web-pwn-var:
+  stadium-ci:
+    build: ./challenges/web/stadium_ci
+    ports:
+      - "30006:8080"
+    environment:
+      - FLAG=infodays{local_stadium_ci_flag}
+    restart: unless-stopped
+
+  referee-decision:
+    build: ./challenges/web/referee_decision_system
+    ports:
+      - "30007:8080"
+    environment:
+      - FLAG=infodays{local_referee_decision_flag}
+      - FLAG1=infodays{local_referee_flag1}
+      - FLAG2=infodays{local_referee_flag2}
+      - FLAG3=infodays{local_referee_flag3}
+    restart: unless-stopped
+
+  man-city:
+    build: ./challenges/web/man_city
+    ports:
+      - "30008:8080"
+    environment:
+      - FLAG=infodays{local_man_city_flag}
+      - FLAG1=infodays{local_mc_flag1}
+      - FLAG2=infodays{local_mc_flag2}
+      - FLAG3=infodays{local_mc_flag3}
+      - FLAG4=infodays{local_mc_flag4}
+      - FLAG5=infodays{local_mc_flag5}
+      - FLAG6=infodays{local_mc_flag6}
+      - FLAG7=infodays{local_mc_flag7}
+      - FLAG8=infodays{local_mc_flag8}
+    restart: unless-stopped
+
+  stadium-defi:
+    build: ./challenges/web/stadium_defi
+    ports:
+      - "30009:8080"
+      - "30010:8545"
+    environment:
+      - FLAG=infodays{local_stadium_defi_flag}
+    restart: unless-stopped
+
+  # ── PWN (TCP, port 1337) ───────────────────────────────────
+
+  var-review:
     build: ./challenges/pwn/var_review
     ports:
-      - "8006:8006"
-    networks:
-      - ctfd_net
-    restart: always
-
-
-
-
-
-
-
-
-
-  ctfd:
-    image: ctfd/ctfd:latest
-    restart: unless-stopped
+      - "30011:1337"
     environment:
-      - DATABASE_URL=mysql+pymysql://${CTFD_DB_USER}:${CTFD_DB_PASSWORD}@db:3306/${CTFD_DB_NAME}
-      - REDIS_URL=redis://${CTFD_REDIS_HOST}:6379
-      - UPLOAD_FOLDER=/var/uploads
-      - SECRET_KEY=${CTFD_SECRET_KEY}
-    volumes:
-      - ctfd_data:/var/uploads
-    depends_on:
-      - db
-      - redis
+      - FLAG=infodays{local_var_review_flag}
+    restart: unless-stopped
+
+  var-replay-buffer:
+    build: ./challenges/pwn/var_replay_buffer
     ports:
-      - "127.0.0.1:8000:8000"
-    networks:
-      - ctfd_net
+      - "30012:1337"
+    environment:
+      - FLAG=infodays{local_var_replay_flag}
+    restart: unless-stopped
 
-volumes:
-  db_data:
-  ctfd_data:
+  shanks:
+    build: ./challenges/pwn/shanks
+    ports:
+      - "30013:1337"
+    environment:
+      - FLAG=infodays{local_shanks_flag}
+    restart: unless-stopped
 
-networks:
-  ctfd_net:
-    driver: bridge
+  # ── MISC ───────────────────────────────────────────────────
+
+  coach-gpt:
+    build: ./challenges/misc/coach_gpt_jailbreak
+    ports:
+      - "30014:8080"
+    environment:
+      - FLAG=infodays{local_coach_gpt_flag}
+      - FLAG_MID=infodays{local_coach_gpt_mid}
+      - FLAG_HARD=infodays{local_coach_gpt_hard}
+    restart: unless-stopped
+
+  referee-briefing:
+    build: ./challenges/misc/referee_briefing
+    env_file:
+      - ./challenges/misc/referee_briefing/.env
+    ports:
+      - "30015:4444"
+    environment:
+      - FLAG=infodays{local_referee_briefing_flag}
+    restart: unless-stopped
+
+  ait-baha-nuclear:
+    build: ./challenges/misc/ait_baha_nuclear
+    ports:
+      - "30016:8080"
+      - "30017:5020"
+    environment:
+      - FLAG=infodays{local_nuclear_flag}
+      - FLAG1=infodays{local_nuclear_flag1}
+      - FLAG2=infodays{local_nuclear_flag2}
+      - FLAG3=infodays{local_nuclear_flag3}
+    restart: unless-stopped
+
+  agadir-medport:
+    build: ./challenges/misc/agadir_medport
+    ports:
+      - "30018:1883"
+    environment:
+      - FLAG=infodays{local_medport_flag}
+      - FLAG1=infodays{local_medport_flag1}
+      - FLAG2=infodays{local_medport_flag2}
+      - FLAG3=infodays{local_medport_flag3}
+    restart: unless-stopped
+
+  # ── FORENSICS (containerized) ──────────────────────────────
+
+  malware-lab:
+    build: ./challenges/forensics/malware_lab_stadium
+    ports:
+      - "30019:8080"
+    environment:
+      - FLAG=infodays{local_malware_lab_flag}
+    restart: unless-stopped
+
+  stadium-ir:
+    build: ./challenges/forensics/stadium_ir
+    ports:
+      - "30020:2222"
+    environment:
+      - FLAG=infodays{local_stadium_ir_flag}
+    restart: unless-stopped
+
+  stadium-soc:
+    build: ./challenges/forensics/stadium_soc
+    ports:
+      - "30021:8080"
+    environment:
+      - FLAG=infodays{local_stadium_soc_flag}
+    restart: unless-stopped

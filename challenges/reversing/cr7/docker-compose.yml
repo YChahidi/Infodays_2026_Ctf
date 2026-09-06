@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  cr7:
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+    image: cr7:lab
+    container_name: cr7
+    restart: unless-stopped
+    environment:
+      FLAG: ${FLAG:-}
+      BANK_ACCOUNT: "93478541"
+    ports:
+      - "8080:8080"

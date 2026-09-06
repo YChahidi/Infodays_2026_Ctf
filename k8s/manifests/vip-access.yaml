@@ -1,0 +1,60 @@
+# Template — replace vip-access, Web, 8080, NODE8080, IMAGE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vip-access
+  namespace: ctfd
+  labels:
+    app: vip-access
+    category: Web
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: vip-access
+  template:
+    metadata:
+      labels:
+        app: vip-access
+        category: Web
+    spec:
+      containers:
+      - name: vip-access
+        image: registry.digitalocean.com/infodays-registry/vip-access:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: FLAG
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: vip-access
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vip-access
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: vip-access
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: NODE8080

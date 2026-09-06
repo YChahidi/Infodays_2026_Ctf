@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Login — Man City FC{% endblock %}
+{% block content %}
+<div class="container" style="max-width:400px">
+  <h1>Admin Login</h1>
+  <div class="card">
+    {% if error %}
+    <div style="background:#ff444420;border:1px solid #ff444440;padding:8px 12px;border-radius:4px;margin-bottom:12px;color:#ff6666;font-size:.85em">{{ error }}</div>
+    {% endif %}
+    <form method="POST">
+      <div style="margin-bottom:12px">
+        <label style="font-size:.8em;color:#556;display:block;margin-bottom:4px">Username</label>
+        <input type="text" name="username" autocomplete="off">
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-size:.8em;color:#556;display:block;margin-bottom:4px">Password</label>
+        <input type="password" name="password">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%">Login</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

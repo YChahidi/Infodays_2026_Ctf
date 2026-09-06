@@ -1,0 +1,60 @@
+# Template — replace CHALLENGE_NAME, CATEGORY, PORT, NODEPORT, IMAGE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: CHALLENGE_NAME
+  namespace: ctfd
+  labels:
+    app: CHALLENGE_NAME
+    category: CATEGORY
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: CHALLENGE_NAME
+  template:
+    metadata:
+      labels:
+        app: CHALLENGE_NAME
+        category: CATEGORY
+    spec:
+      containers:
+      - name: CHALLENGE_NAME
+        image: registry.digitalocean.com/infodays-registry/CHALLENGE_NAME:latest
+        ports:
+        - containerPort: PORT
+        env:
+        - name: FLAG
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: CHALLENGE_NAME
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: CHALLENGE_NAME
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: CHALLENGE_NAME
+  ports:
+  - port: PORT
+    targetPort: PORT
+    nodePort: NODEPORT

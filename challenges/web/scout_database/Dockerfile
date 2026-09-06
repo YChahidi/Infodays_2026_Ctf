@@ -1,6 +1,13 @@
-FROM python:3.9-slim
-WORKDIR /app
-COPY app.py stadium.db ./
-RUN pip install flask
-EXPOSE 8005
-CMD ["python", "app.py"]
+FROM registry.digitalocean.com/infodays-registry/base:web
+
+COPY app.py .
+COPY init_db.py .
+COPY static ./static
+COPY entrypoint.sh .
+
+USER root
+RUN chmod +x entrypoint.sh
+USER 1000
+
+EXPOSE 8080
+ENTRYPOINT ["./entrypoint.sh"]

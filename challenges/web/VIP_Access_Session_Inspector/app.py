@@ -2,11 +2,11 @@ from flask import Flask, request, make_response, render_template_string, redirec
 import jwt
 import datetime
 import json
+import os
 
 app = Flask(__name__)
 
-# Weak secret — crackable with rockyou.txt: "football"
-JWT_SECRET = "football"
+FLAG = os.environ.get("FLAG", "INFODAYS{b64_d3c0d3_f0und}")
 
 HTML = """
 <!DOCTYPE html>
@@ -22,11 +22,12 @@ HTML = """
     </style>
 </head>
 <body>
-<div class="box {% if is_vip %}granted{% else %}denied{% endif %}">
-    {% if is_vip %}
-        <h2>✅ VIP ACCESS GRANTED</h2>
-        <p>Welcome, <b>{{ username }}</b></p>
-        <p>🏟️ Flag: <b>INFODAYS{JWT_W34K_S3CR3T_CR4CK3D_2030}</b></p>
+    <h1>System Dashboard</h1>
+    {% if is_admin %}
+        <div style="background: #e1ffdc; padding: 20px; border: 2px solid green;">
+            <h3>Access Granted: Administrator</h3>
+            <p>Flag: <b>{{ flag }}</b></p>
+        </div>
     {% else %}
         <h2>❌ ACCESS DENIED</h2>
         <p>Welcome, <b>{{ username }}</b>. Your clearance level is insufficient.</p>
@@ -39,39 +40,49 @@ HTML = """
 </html>
 """
 
-def make_guest_token():
-    payload = {
-        "username": "guest",
-        "role": "viewer",
-        "iat": datetime.datetime.utcnow(),
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=6)
-    }
-    return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
+SPLASH = '''<!doctype html>
+<html><head><meta charset="utf-8"><title>VIP Access</title>
+<style>*{margin:0;padding:0}body{background:#050a12;overflow:hidden}
+.s{width:100vw;height:100vh}
+.s img{width:100%;height:100%;object-fit:cover}
+.o{position:fixed;inset:0;background:linear-gradient(to bottom,rgba(5,10,18,.1),rgba(5,10,18,.05) 40%,rgba(5,10,18,.5) 80%,rgba(5,10,18,.95));pointer-events:none}
+.t{position:fixed;bottom:60px;width:100%;text-align:center;z-index:2;font-family:Inter,system-ui,sans-serif}
+.t h1{font-size:48px;font-weight:800;color:#fff;text-shadow:0 2px 40px rgba(0,0,0,.8)}
+.t h1 span{color:#5e9fff}
+.t p{color:#8899b5;font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+</style></head><body>
+<div class="s"><img src="/static/0iq.jpeg" alt=""></div>
+<div class="o"></div>
+<div class="t"><h1>&#x1F451; <span>VIP Access</span></h1>
+<p>Session Inspector</p></div>
+</body></html>'''
 
 @app.route('/')
-def index():
-    token = request.cookies.get('vip_token')
+def splash():
+    return SPLASH
 
-    if not token:
-        token = make_guest_token()
-        resp = make_response(render_template_string(HTML, username="guest", is_vip=False))
-        resp.set_cookie('vip_token', token, httponly=False)  # intentionally readable
+@app.route('/app')
+def index():
+    session_cookie = request.cookies.get('session_data')
+    
+    if not session_cookie:
+        # Default session: {"user": "guest", "is_admin": false}
+        default_data = {"user": "guest", "is_admin": False}
+        json_str = json.dumps(default_data)
+        encoded = base64.b64encode(json_str.encode()).decode()
+        
+        resp = make_response(render_template_string(HTML, user="guest", is_admin=False, flag=FLAG))
+        resp.set_cookie('session_data', encoded)
         return resp
 
     # VULNERABILITY: weak secret + only checks role field
     try:
-        # Strictly require HS256 — no algorithm confusion here
-        # The weakness is purely the crackable secret
-        data = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
-        is_vip = data.get("role") == "vip"
-        username = data.get("username", "unknown")
-        return render_template_string(HTML, username=username, is_vip=is_vip)
-    except jwt.ExpiredSignatureError:
-        resp = make_response(redirect('/'))
-        resp.delete_cookie('vip_token')
-        return resp
-    except jwt.InvalidTokenError as e:
-        return render_template_string(HTML, username="invalid", is_vip=False), 401
+        # Decode the Base64 cookie
+        decoded = base64.b64decode(session_cookie).decode()
+        data = json.loads(decoded)
+        return render_template_string(HTML, user=data.get('user'), is_admin=data.get('is_admin'), flag=FLAG)
+    except:
+        return "Invalid session data!", 400
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)

@@ -1,29 +1,31 @@
-FROM ubuntu:22.04
+# ── Stage 1: build ──────────────────────────────────────────────
+FROM ubuntu:22.04 AS build
 
 RUN apt-get update && apt-get install -y \
-    socat \
-    gcc \
-    libc6-dev \
+        gcc \
+        libc6-dev \
+        binutils \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+WORKDIR /build
 COPY var_review.c .
-COPY flag.txt .
 
-# Compile with FULL MITIGATIONS:
-# - Stack canary enabled (default)
-# - PIE enabled
-# - Full RELRO
 RUN gcc -o var_review var_review.c \
-    -fstack-protector-all \
-    -Wl,-z,relro,-z,now \
-    -pie \
-    -fPIE \
-    -D_FORTIFY_SOURCE=2
+        -fstack-protector-all \
+        -Wl,-z,relro,-z,now \
+        -pie -fPIE \
+        -D_FORTIFY_SOURCE=2 \
+    && strip --strip-all var_review
 
-RUN chmod 755 var_review
-RUN rm var_review.c
+# ── Stage 2: runtime ───────────────────────────────────────────
+FROM registry.digitalocean.com/infodays-registry/base:pwn
 
-EXPOSE 8006
+WORKDIR /home/ctf
+COPY --from=build /build/var_review .
+COPY entrypoint.sh .
+RUN chmod 755 var_review entrypoint.sh
 
-CMD ["socat", "TCP-LISTEN:8006,reuseaddr,fork", "EXEC:./var_review"]
+USER 1000
+EXPOSE 1337
+
+ENTRYPOINT ["./entrypoint.sh"]

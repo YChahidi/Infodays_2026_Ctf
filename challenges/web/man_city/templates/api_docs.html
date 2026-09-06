@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}API Docs — Man City FC{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>API Documentation</h1>
+  <div class="card">
+    <h2>Authentication</h2>
+    <p style="font-size:.85em;color:#889;margin-bottom:10px">Obtain a JWT token to access protected endpoints.</p>
+    <pre class="mono" style="background:#0a0f1a;padding:12px;border-radius:4px;font-size:.8em;overflow-x:auto;color:#8ab4e8">
+POST /api/auth
+Content-Type: application/json
+
+{"username": "scout", "password": "scout2026"}
+
+Response:
+{"token": "eyJ..."}
+    </pre>
+  </div>
+  <div class="card">
+    <h2>Export Match Data</h2>
+    <p style="font-size:.85em;color:#889;margin-bottom:10px">Export match reports. Requires <strong>superadmin</strong> role.</p>
+    <pre class="mono" style="background:#0a0f1a;padding:12px;border-radius:4px;font-size:.8em;overflow-x:auto;color:#8ab4e8">
+GET /api/export?format=json
+Authorization: Bearer &lt;token&gt;
+
+Response: exported data in requested format
+    </pre>
+    <p style="font-size:.78em;color:#556;margin-top:8px">Note: Only users with role=superadmin can access this endpoint. Contact system administrator for access elevation.</p>
+  </div>
+  <div class="card">
+    <h2>Available Roles</h2>
+    <table>
+      <tr><td class="mono">viewer</td><td style="color:#556">Read-only access</td></tr>
+      <tr><td class="mono">manager</td><td style="color:#556">Player management</td></tr>
+      <tr><td class="mono">admin</td><td style="color:#556">Full dashboard access</td></tr>
+      <tr><td class="mono">superadmin</td><td style="color:#556">API export + system operations</td></tr>
+    </table>
+  </div>
+</div>
+{% endblock %}

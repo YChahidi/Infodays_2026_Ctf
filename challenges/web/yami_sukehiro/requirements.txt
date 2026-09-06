@@ -1,0 +1,7 @@
+flask==3.0.3
+ics==0.7.2
+PyJWT==2.8.0
+cryptography==43.0.1
+pycryptodome==3.21.0
+sympy==1.13.3
+PyMySQL==1.1.1

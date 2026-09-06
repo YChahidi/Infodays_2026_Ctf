@@ -1,0 +1,60 @@
+# Template — replace shanks, Pwn, 1337, NODE1337, IMAGE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shanks
+  namespace: ctfd
+  labels:
+    app: shanks
+    category: Pwn
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: shanks
+  template:
+    metadata:
+      labels:
+        app: shanks
+        category: Pwn
+    spec:
+      containers:
+      - name: shanks
+        image: registry.digitalocean.com/infodays-registry/shanks:latest
+        ports:
+        - containerPort: 1337
+        env:
+        - name: FLAG
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: shanks
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shanks
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: shanks
+  ports:
+  - port: 1337
+    targetPort: 1337
+    nodePort: NODE1337

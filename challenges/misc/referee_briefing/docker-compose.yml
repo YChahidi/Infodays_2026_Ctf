@@ -1,0 +1,9 @@
+services:
+  referee_briefing:
+    build: .
+    container_name: referee_briefing
+    ports:
+      - "8008:8008"
+    env_file:
+      - .env
+    restart: unless-stopped

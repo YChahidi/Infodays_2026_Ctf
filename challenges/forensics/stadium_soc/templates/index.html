@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stadium FC — SOC Analyst Lab</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    color:#e0e0e0;min-height:100vh;background:#0a0a0a;
+  }
+  .bg-video{
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    z-index:0;object-fit:cover;opacity:.15;pointer-events:none;
+  }
+  .container{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:30px 20px}
+  .header{text-align:center;margin-bottom:30px}
+  .header h1{
+    font-size:1.8em;margin-bottom:4px;color:#00ff88;
+    text-shadow:0 0 20px rgba(0,255,136,.2);letter-spacing:1px;
+    text-transform:uppercase;font-weight:600;
+  }
+  .header .subtitle{color:#666;font-size:.95em;letter-spacing:.5px}
+
+  /* Progress bar */
+  .progress-wrap{margin-bottom:24px}
+  .progress-stats{
+    display:flex;justify-content:space-between;font-size:.78em;color:#555;
+    margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;
+  }
+  .progress-bar{height:4px;background:#111;border-radius:2px;overflow:hidden}
+  .progress-fill{height:100%;background:#00ff88;transition:width .3s;border-radius:2px}
+
+  /* Sidebar tracker */
+  .layout{display:flex;gap:24px;align-items:flex-start}
+  .sidebar{
+    flex:0 0 200px;position:sticky;top:20px;
+    background:rgba(15,15,22,.9);border:1px solid #1a1a2e;border-radius:6px;
+    padding:14px;backdrop-filter:blur(10px);max-height:calc(100vh - 40px);overflow-y:auto;
+  }
+  .sidebar h3{font-size:.75em;color:#556;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+  .q-tracker{display:flex;flex-wrap:wrap;gap:4px}
+  .q-dot{
+    width:24px;height:24px;border-radius:3px;display:flex;align-items:center;justify-content:center;
+    font-size:.65em;font-family:monospace;font-weight:700;
+    background:#111;border:1px solid #222;color:#444;
+  }
+  .q-dot.correct{background:#00ff8820;border-color:#00ff8844;color:#00cc6a}
+  .q-dot.locked{background:#ff444415;border-color:#ff444433;color:#882222}
+  .q-dot.active{background:#00aaff15;border-color:#00aaff66;color:#00aaff}
+  .q-dot.pending{background:#111;border-color:#1a1a2e;color:#333}
+  .sidebar-score{
+    margin-top:12px;padding-top:10px;border-top:1px solid #1a1a2e;
+    font-size:.8em;color:#556;
+  }
+  .sidebar-score strong{color:#aaa}
+
+  .main{flex:1;min-width:0}
+
+  /* Evidence panel */
+  .evidence-panel{
+    background:rgba(15,15,22,.9);border:1px solid #1a1a2e;border-radius:6px;
+    margin-bottom:24px;padding:18px;backdrop-filter:blur(10px);
+  }
+  .evidence-panel h2{
+    color:#889;font-size:.9em;text-transform:uppercase;letter-spacing:1.5px;
+    margin-bottom:12px;font-weight:600;
+  }
+  .ev-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+  .ev-tab{
+    padding:5px 12px;border-radius:3px;cursor:pointer;font-size:.8em;
+    background:#111;border:1px solid #222;color:#666;transition:.2s;
+    font-family:'Courier New',monospace;
+  }
+  .ev-tab:hover,.ev-tab.active{background:#0a1a2a;border-color:#00aaff66;color:#00aaff}
+  .ev-content{
+    background:#080810;border:1px solid #1a1a1a;border-radius:3px;
+    padding:12px;max-height:350px;overflow:auto;font-family:'Courier New',monospace;
+    font-size:.78em;line-height:1.6;white-space:pre-wrap;word-break:break-all;color:#999;
+  }
+  .ev-content::-webkit-scrollbar{width:6px}
+  .ev-content::-webkit-scrollbar-track{background:#080810}
+  .ev-content::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+
+  /* Active question card */
+  .q-active{
+    background:rgba(15,15,22,.9);border:1px solid #1a1a2e;border-radius:6px;
+    padding:24px;backdrop-filter:blur(10px);margin-bottom:20px;
+  }
+  .q-active .q-header{
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .q-active .q-number{
+    font-family:monospace;font-size:.85em;color:#556;font-weight:700;
+  }
+  .diff-badge{
+    display:inline-block;padding:1px 8px;border-radius:2px;font-size:.7em;
+    font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+  }
+  .diff-Easy{background:#00ff8815;color:#00cc6a;border:1px solid #00ff8830}
+  .diff-Medium{background:#ffaa0015;color:#cc8800;border:1px solid #ffaa0030}
+  .diff-Hard{background:#ff444415;color:#cc3333;border:1px solid #ff444430}
+  .cat-tag{font-size:.72em;color:#445;margin-left:auto}
+  .q-text{font-size:.95em;color:#ccc;line-height:1.6;margin-bottom:16px}
+  .q-input-row{display:flex;gap:8px;margin-bottom:10px}
+  .q-input{
+    flex:1;padding:8px 12px;border-radius:3px;border:1px solid #222;
+    background:#0a0a0a;color:#ddd;font-size:.88em;font-family:'Courier New',monospace;
+  }
+  .q-input:focus{outline:none;border-color:#00aaff44}
+  .q-submit{
+    padding:8px 20px;border:none;border-radius:3px;cursor:pointer;
+    background:#00ff88;color:#0a0a0a;font-weight:600;font-size:.85em;
+    text-transform:uppercase;letter-spacing:.5px;transition:opacity .15s;
+  }
+  .q-submit:hover{opacity:.85}
+  .q-submit:disabled{opacity:.3;cursor:not-allowed}
+  .q-skip{
+    padding:8px 16px;border:1px solid #222;border-radius:3px;cursor:pointer;
+    background:transparent;color:#555;font-size:.8em;text-transform:uppercase;
+    letter-spacing:.5px;transition:.2s;
+  }
+  .q-skip:hover{border-color:#ff444444;color:#884444}
+  .q-meta{display:flex;align-items:center;gap:16px;font-size:.8em;color:#556}
+  .attempts-left{font-family:monospace}
+  .hint-toggle{
+    cursor:pointer;color:#444;text-transform:uppercase;letter-spacing:.5px;
+    font-size:.78em;user-select:none;
+  }
+  .hint-toggle:hover{color:#00aaff}
+  .hint-text{
+    display:none;color:#997700;font-size:.8em;margin-top:10px;
+    padding:8px 12px;background:#1a1500;border-left:2px solid #554400;
+    font-family:'Courier New',monospace;
+  }
+  .feedback{
+    margin-top:10px;padding:8px 12px;border-radius:3px;font-size:.85em;
+    font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:none;
+  }
+  .feedback.correct{background:#00ff8815;border:1px solid #00ff8830;color:#00cc6a}
+  .feedback.wrong{background:#ff444415;border:1px solid #ff444430;color:#cc3333}
+  .feedback.locked{background:#ff444410;border:1px solid #ff444420;color:#772222}
+
+  /* Final results */
+  .final-panel{
+    background:rgba(15,15,22,.9);border:1px solid #1a1a2e;border-radius:6px;
+    padding:30px;text-align:center;backdrop-filter:blur(10px);display:none;
+  }
+  .final-score{font-size:2.8em;font-weight:700;font-family:monospace}
+  .final-score.pass{color:#00ff88}
+  .final-score.fail{color:#ff4444}
+  .final-label{font-size:.9em;color:#666;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+  .final-flag{
+    margin-top:16px;padding:14px 20px;border-radius:4px;
+    background:rgba(0,255,136,.05);border:1px solid #00ff8833;
+    font-family:monospace;font-size:1em;color:#00ff88;word-break:break-all;
+  }
+  .final-flag .fl{color:#556;font-size:.8em;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+  .reset-btn{
+    display:inline-block;margin-top:20px;padding:8px 24px;border-radius:3px;
+    background:#111;border:1px solid #222;color:#667;cursor:pointer;
+    font-size:.85em;text-transform:uppercase;letter-spacing:.5px;transition:.2s;
+  }
+  .reset-btn:hover{border-color:#00aaff44;color:#00aaff}
+
+  footer{text-align:center;color:#333;font-size:.72em;padding:20px 0;letter-spacing:.5px}
+
+  @media(max-width:768px){
+    .layout{flex-direction:column}
+    .sidebar{flex:none;position:static;width:100%}
+  }
+</style>
+</head>
+<body>
+<img src="/static/background.gif" class="bg-video" alt="">
+<div class="container">
+  <div class="header">
+    <h1>Stadium FC &mdash; SOC Analyst Lab</h1>
+    <p class="subtitle">Incident Response &middot; Log Analysis &middot; Threat Intelligence</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-stats">
+      <span>Progress: <span id="prog-count">0</span> / {{total}}</span>
+      <span>Correct: <span id="prog-correct">0</span> / {{total}}</span>
+      <span>Threshold: 28 / {{total}} (70%)</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <h3>Questions</h3>
+      <div class="q-tracker" id="tracker">
+        {% for q in questions %}
+        <div class="q-dot pending" id="dot-{{loop.index0}}" title="Q{{q.num}}">{{q.num}}</div>
+        {% endfor %}
+      </div>
+      <div class="sidebar-score">
+        Score: <strong><span id="side-score">0</span></strong> / {{total}}
+      </div>
+    </div>
+
+    <div class="main">
+      <!-- Evidence -->
+      <div class="evidence-panel">
+        <h2>Evidence Files</h2>
+        <div class="ev-tabs">
+          {% for name in evidence %}
+          <div class="ev-tab{% if loop.first %} active{% endif %}" onclick="showEvidence('{{name}}',this)">{{name}}</div>
+          {% endfor %}
+        </div>
+        {% for name, content in evidence.items() %}
+        <div class="ev-content" id="ev-{{name}}" {% if not loop.first %}style="display:none"{% endif %}>{{content}}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Question card -->
+      <div class="q-active" id="q-card">
+        <div class="q-header">
+          <span class="q-number" id="q-num">01</span>
+          <span class="diff-badge" id="q-diff">Easy</span>
+          <span class="cat-tag" id="q-cat">IOC</span>
+        </div>
+        <div class="q-text" id="q-text"></div>
+        <div class="q-input-row">
+          <input type="text" class="q-input" id="q-answer" placeholder="" autocomplete="off">
+          <button class="q-submit" id="q-btn" onclick="submitAnswer()">Submit</button>
+          <button class="q-skip" id="q-skip-btn" onclick="skipQuestion()">Skip</button>
+        </div>
+        <div class="q-meta">
+          <span class="attempts-left">Attempts: <span id="q-attempts">3</span> / {{max_attempts}}</span>
+          <span class="hint-toggle" onclick="toggleHint()">Hint</span>
+        </div>
+        <div class="hint-text" id="q-hint"></div>
+        <div class="feedback" id="q-feedback"></div>
+      </div>
+
+      <!-- Final panel -->
+      <div class="final-panel" id="final-panel">
+        <div class="final-score" id="final-score">0 / {{total}}</div>
+        <div class="final-label" id="final-label"></div>
+        <div class="final-flag" id="final-flag" style="display:none"></div>
+        <button class="reset-btn" onclick="resetLab()">Reset Lab</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>STADIUM FC SOC LAB &mdash; INFODAYS 2026</footer>
+</div>
+
+<script>
+const QUESTIONS = {{ questions | tojson }};
+const TOTAL = {{ total }};
+const MAX = {{ max_attempts }};
+let current = 0;
+let results = {};
+let attempts = {};
+
+function loadState() {
+  fetch('/api/state').then(r=>r.json()).then(d=>{
+    current = d.current;
+    results = d.results || {};
+    attempts = d.attempts || {};
+    render();
+  });
+}
+
+function render() {
+  // Update tracker dots
+  for (let i = 0; i < TOTAL; i++) {
+    const dot = document.getElementById('dot-'+i);
+    const qid = QUESTIONS[i].id;
+    dot.className = 'q-dot';
+    if (results[qid] === 'correct') dot.classList.add('correct');
+    else if (results[qid] === 'locked') dot.classList.add('locked');
+    else if (i === current) dot.classList.add('active');
+    else dot.classList.add('pending');
+  }
+  // Progress
+  const done = Object.keys(results).length;
+  const correct = Object.values(results).filter(v=>v==='correct').length;
+  document.getElementById('prog-count').textContent = done;
+  document.getElementById('prog-correct').textContent = correct;
+  document.getElementById('prog-bar').style.width = (done/TOTAL*100)+'%';
+  document.getElementById('side-score').textContent = correct;
+
+  if (current >= TOTAL) {
+    document.getElementById('q-card').style.display = 'none';
+    showFinal();
+    return;
+  }
+
+  document.getElementById('q-card').style.display = 'block';
+  document.getElementById('final-panel').style.display = 'none';
+
+  const q = QUESTIONS[current];
+  document.getElementById('q-num').textContent = String(q.num).padStart(2,'0');
+  const diffEl = document.getElementById('q-diff');
+  diffEl.textContent = q.difficulty;
+  diffEl.className = 'diff-badge diff-'+q.difficulty;
+  document.getElementById('q-cat').textContent = q.category;
+  document.getElementById('q-text').textContent = q.question;
+  document.getElementById('q-hint').textContent = q.hint;
+  document.getElementById('q-hint').style.display = 'none';
+  const used = attempts[q.id] || 0;
+  document.getElementById('q-attempts').textContent = (MAX - used);
+  document.getElementById('q-answer').value = '';
+  document.getElementById('q-answer').focus();
+  document.getElementById('q-btn').disabled = false;
+  const fb = document.getElementById('q-feedback');
+  fb.style.display = 'none';
+  fb.className = 'feedback';
+}
+
+function submitAnswer() {
+  const ans = document.getElementById('q-answer').value.trim();
+  if (!ans) return;
+  document.getElementById('q-btn').disabled = true;
+
+  fetch('/api/answer', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({q: current, answer: ans})
+  }).then(r=>r.json()).then(d=>{
+    const fb = document.getElementById('q-feedback');
+    if (d.status === 'correct') {
+      fb.textContent = 'Correct';
+      fb.className = 'feedback correct';
+      fb.style.display = 'block';
+      results[QUESTIONS[current].id] = 'correct';
+      setTimeout(()=>{ current = d.next; render(); }, 800);
+    } else if (d.status === 'locked') {
+      fb.textContent = 'Locked — no attempts remaining';
+      fb.className = 'feedback locked';
+      fb.style.display = 'block';
+      results[QUESTIONS[current].id] = 'locked';
+      setTimeout(()=>{ current = d.next; render(); }, 1200);
+    } else if (d.status === 'wrong') {
+      fb.textContent = 'Wrong — ' + d.attempts_left + ' attempt' + (d.attempts_left!==1?'s':'') + ' left';
+      fb.className = 'feedback wrong';
+      fb.style.display = 'block';
+      attempts[QUESTIONS[current].id] = MAX - d.attempts_left;
+      document.getElementById('q-attempts').textContent = d.attempts_left;
+      document.getElementById('q-answer').value = '';
+      document.getElementById('q-btn').disabled = false;
+      document.getElementById('q-answer').focus();
+    } else {
+      document.getElementById('q-btn').disabled = false;
+    }
+  });
+}
+
+function skipQuestion() {
+  fetch('/api/skip', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({q: current})
+  }).then(r=>r.json()).then(d=>{
+    results[QUESTIONS[current].id] = 'locked';
+    current = d.next;
+    render();
+  });
+}
+
+function showFinal() {
+  fetch('/api/finish').then(r=>r.json()).then(d=>{
+    document.getElementById('final-panel').style.display = 'block';
+    const sc = document.getElementById('final-score');
+    sc.textContent = d.score + ' / ' + d.total;
+    sc.className = 'final-score ' + (d.passed ? 'pass' : 'fail');
+    document.getElementById('final-label').textContent =
+      d.pct + '% — ' + (d.passed ? 'Passed' : 'Failed (need 70%)');
+    const ff = document.getElementById('final-flag');
+    if (d.flag) {
+      ff.innerHTML = '<span class="fl">Lab Cleared</span>' + d.flag;
+      ff.style.display = 'block';
+    } else {
+      ff.style.display = 'none';
+    }
+  });
+}
+
+function resetLab() {
+  fetch('/api/reset',{method:'POST'}).then(()=>{
+    current = 0;
+    results = {};
+    attempts = {};
+    render();
+  });
+}
+
+function toggleHint() {
+  const h = document.getElementById('q-hint');
+  h.style.display = h.style.display === 'block' ? 'none' : 'block';
+}
+
+function showEvidence(name, el) {
+  document.querySelectorAll('.ev-content').forEach(e => e.style.display='none');
+  document.querySelectorAll('.ev-tab').forEach(e => e.classList.remove('active'));
+  document.getElementById('ev-'+name).style.display='block';
+  el.classList.add('active');
+}
+
+// Enter key submits
+document.getElementById('q-answer').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); }
+});
+
+loadState();
+</script>
+</body>
+</html>

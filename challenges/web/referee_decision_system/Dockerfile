@@ -1,19 +1,20 @@
-FROM python:3.9-slim
-
-RUN useradd -m ctfuser && \
-    mkdir -p /home/ctfuser /tmp/backups /tmp/reports && \
-    chown -R ctfuser:ctfuser /home/ctfuser /tmp/backups /tmp/reports
-
-WORKDIR /home/ctfuser
+FROM registry.digitalocean.com/infodays-registry/base:web
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+
+USER root
+RUN pip install --no-cache-dir -r requirements.txt && \
+    mkdir -p /tmp/backups /tmp/reports && \
+    chown -R 1000:1000 /tmp/backups /tmp/reports
+USER 1000
 
 COPY app.py .
+COPY static ./static
+COPY entrypoint.sh .
 
-RUN chown -R ctfuser:ctfuser /home/ctfuser
+USER root
+RUN chmod +x entrypoint.sh
+USER 1000
 
-USER ctfuser
-EXPOSE 5000
-
-CMD ["python", "app.py"]
+EXPOSE 8080
+ENTRYPOINT ["./entrypoint.sh"]

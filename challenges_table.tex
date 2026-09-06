@@ -1,0 +1,102 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=1.5cm,landscape]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+
+\newcommand{\easy}{\textbf{Easy}}
+\newcommand{\medium}{\textbf{Medium}}
+\newcommand{\hard}{\textbf{Hard}}
+\newcommand{\vhard}{\textbf{Very Hard}}
+\newcommand{\insane}{\textbf{Insane}}
+
+\title{\Huge\bfseries Infodays 2026 --- CTF Challenge Catalog}
+\author{SaamNoLimits}
+\date{April 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\vspace{0.5cm}
+\noindent\textbf{29 Challenges \quad|\quad 64+ Flags \quad|\quad 7 Categories}
+
+\vspace{0.8cm}
+
+\begin{longtable}{>{\raggedright}p{0.5cm} >{\raggedright}p{3.5cm} >{\raggedright}p{2.2cm} >{\raggedright}p{10cm} p{1.2cm} >{\raggedright\arraybackslash}p{1.8cm}}
+\toprule
+\textbf{\#} & \textbf{Challenge} & \textbf{Category} & \textbf{Description} & \textbf{Flags} & \textbf{Difficulty} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{\#} & \textbf{Challenge} & \textbf{Category} & \textbf{Description} & \textbf{Flags} & \textbf{Difficulty} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+%% ── WEB ──────────────────────────────────────────
+1  & VIP Access              & Web        & Cookie-based authentication bypass                                                & 1 & \easy     \\
+2  & The Secret Archive      & Web        & Restricted file archive with layered access control                               & 1 & \easy     \\
+3  & Ping-o-Matic            & Web        & Network ping utility with input filtering                                         & 1 & \hard  \\
+4  & Scout Database          & Web        & Player registration database with strict input validation                         & 1 & \hard     \\
+5  & VAR Check Bro           & Web        & Video assistant referee with internal review service                              & 1 & \hard     \\
+6  & Stadium CI              & Web        & Continuous integration console with authentication layer                         & 1 & \hard     \\
+7  & Referee Decision System & Web        & Multi-vector match decision management system                                    & 3 & \hard     \\
+8  & Man City                & Web        & Progressive multi-vulnerability web application                                   & 8 & \insane \\
+9  & Stadium DeFi            & Web        & Smart contract betting platform on Ethereum                                      & 1 & \vhard    \\
+
+%% ── PWN ──────────────────────────────────────────
+10 & VAR Review              & Pwn        & Binary with improper string handling                                             & 1 & \medium   \\
+11 & VAR Replay Buffer       & Pwn        & Hardened replay buffer manager with hidden functionality                         & 1 & \hard     \\
+12 & SHANKS                  & Pwn        & Pirate crew roster manager with heap memory bugs                                 & 1 & \insane   \\
+
+%% ── REVERSING ────────────────────────────────────
+13 & Legends Gate            & Reversing  & Protected VIP stadium gate binary                                                & 1 & \medium   \\
+14 & Tournament Bracket      & Reversing  & Three-stage tournament progression binary                                        & 3 & \insane   \\
+15 & VAR Mobile Companion    & Reversing  & Android mobile companion app with layered secrets                                 & 5 & \insane   \\
+
+%% ── CRYPTO ───────────────────────────────────────
+16 & Coach Formation         & Crypto     & Custom cipher with known-plaintext pairs                                         & 1 & \vhard    \\
+17 & Cipher Championship     & Crypto     & Three-round progressive cryptography championship                                & 3 & \insane   \\
+18 & VAR Override            & Crypto     & ECDSA signature verification system with encrypted flag                          & 1 & \insane   \\
+
+%% ── MISC ─────────────────────────────────────────
+19 & Coach GPT Jailbreak     & Misc       & AI coaching assistant with hardened output filters                               & 2 & \medium   \\
+20 & Referee Briefing        & Misc       & MCP-powered referee briefing tool server                                         & 2 & \hard     \\
+21 & Ait Baha Nuclear        & Misc       & Nuclear facility HMI with industrial control system                              & 3 & \medium   \\
+22 & Agadir Medport          & Misc       & Maritime port IoT messaging broker                                               & 3 & \medium   \\
+
+%% ── OSINT ────────────────────────────────────────
+23 & KDB Scouting Report     & OSINT      & Multi-layer image with hidden intelligence                                        & 4 & \insane \\
+24 & Venue Recon             & OSINT      & Identify a location from an image and its metadata                               & 1 & \medium   \\
+
+%% ── FORENSICS ────────────────────────────────────
+25 & The VIP Invitation      & Forensics  & Stadium invitation image with hidden data                                        & 1 & \hard     \\
+26 & Pearl Binary Signature  & Forensics  & Image mosaic encoding a binary signature                                         & 1 & \hard     \\
+27 & Malware Lab Stadium     & Forensics  & Malware sample analysis lab --- 10 questions, 70\% pass threshold                & 1 & \medium   \\
+28 & Stadium IR              & Forensics  & Compromised server incident response via SSH                                     & 2 & \hard     \\
+29 & Stadium SOC             & Forensics  & SOC analyst triage across 7 evidence files --- 40 questions                      & 1 & \medium   \\
+
+\end{longtable}
+
+\vspace{1cm}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Difficulty} & \textbf{Challenges} & \textbf{Flags} \\
+\midrule
+\easy       & 2  & 2  \\
+\medium     & 7  & 13 \\
+\hard       & 10 & 15 \\
+\vhard      & 2  & 2  \\
+\insane     & 8  & 32 \\
+\midrule
+\textbf{Total} & \textbf{29} & \textbf{64} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Reports — Man City FC{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Match Reports</h1>
+  <div class="card">
+    <table>
+      <thead><tr><th>File</th><th>Action</th></tr></thead>
+      <tbody>
+      {% for f in files %}
+      <tr>
+        <td class="mono">{{ f }}</td>
+        <td><a href="/download?file={{ f }}" class="btn btn-secondary" style="padding:4px 12px;font-size:.78em">Download</a></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Preferences — Man City FC{% endblock %}
+{% block content %}
+<div class="container" style="max-width:500px">
+  <h1>User Preferences</h1>
+  {% if msg %}
+  <div class="card" style="border-color:#4ade8044;color:#4ade80;font-size:.85em">{{ msg }}</div>
+  {% endif %}
+  <div class="card">
+    <form method="POST">
+      <div style="margin-bottom:12px">
+        <label style="font-size:.8em;color:#556;display:block;margin-bottom:4px">Theme</label>
+        <select name="theme">
+          <option value="dark" {% if prefs.theme == 'dark' %}selected{% endif %}>Dark</option>
+          <option value="light" {% if prefs.theme == 'light' %}selected{% endif %}>Light</option>
+        </select>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:.8em;color:#556;display:block;margin-bottom:4px">Language</label>
+        <select name="lang">
+          <option value="en" {% if prefs.lang == 'en' %}selected{% endif %}>English</option>
+          <option value="fr" {% if prefs.lang == 'fr' %}selected{% endif %}>French</option>
+          <option value="ar" {% if prefs.lang == 'ar' %}selected{% endif %}>Arabic</option>
+        </select>
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-size:.8em;color:#556">
+          <input type="checkbox" name="notifications" {% if prefs.notifications %}checked{% endif %}>
+          Enable notifications
+        </label>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%">Save</button>
+    </form>
+  </div>
+  <div class="card" style="font-size:.78em;color:#445">
+    <p>Your preferences are stored in a cookie for persistence across sessions.</p>
+    <p class="mono" style="margin-top:6px;word-break:break-all;color:#334">Cookie: prefs={{ request.cookies.get('prefs', 'not set') }}</p>
+    <p class="mono" style="margin-top:6px;color:#334">Current: theme={{ prefs.theme }} | lang={{ prefs.lang }} | notify={{ prefs.notifications }}</p>
+  </div>
+</div>
+{% endblock %}

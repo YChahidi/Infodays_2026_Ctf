@@ -1,0 +1,319 @@
+# Infodays 2026 CTF — Challenge Registry
+# Maps each challenge to platform deployment parameters.
+
+registry: registry.digitalocean.com/infodays-registry
+
+challenges:
+
+  # ── WEB (HTTP, port 8080) ────────────────────────────────────
+  - name: vip-access
+    path: challenges/web/VIP_Access_Session_Inspector
+    category: Web
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30001
+    flags: 1
+
+  - name: secret-archive
+    path: challenges/web/the_secret_archive
+    category: Web
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30002
+    flags: 1
+
+  - name: ping-o-matic
+    path: challenges/web/ping_o_matic
+    category: Web
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30003
+    flags: 1
+
+  - name: scout-database
+    path: challenges/web/scout_database
+    category: Web
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30004
+    flags: 1
+
+  - name: var-check-bro
+    path: challenges/web/var_check_bro
+    category: Web
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30005
+    flags: 1
+
+  - name: stadium-ci
+    path: challenges/web/stadium_ci
+    category: Web
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30006
+    flags: 1
+
+  - name: referee-decision
+    path: challenges/web/referee_decision_system
+    category: Web
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30007
+    flags: 3
+
+  - name: man-city
+    path: challenges/web/man_city
+    category: Web
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30008
+    flags: 8
+
+  - name: stadium-defi
+    path: challenges/web/stadium_defi
+    category: Web
+    type: http
+    base: custom
+    port: 8080
+    nodeport: 30009
+    extra_ports:
+      - name: rpc
+        port: 8545
+        nodeport: 30010
+    flags: 1
+
+  - name: yami-sukehiro
+    path: challenges/web/yami_sukehiro
+    category: Web
+    type: http
+    base: custom
+    port: 8080
+    nodeport: 30030
+    flags: 2
+
+  - name: batistuta
+    path: challenges/web/batistuta
+    category: Web
+    type: http
+    base: custom
+    port: 8080
+    nodeport: 30031
+    flags: 2
+
+  # ── PWN (TCP, port 1337) ─────────────────────────────────────
+  - name: var-review
+    path: challenges/pwn/var_review
+    category: Pwn
+    type: tcp
+    base: pwn
+    port: 1337
+    nodeport: 30011
+    flags: 1
+
+  - name: var-replay-buffer
+    path: challenges/pwn/var_replay_buffer
+    category: Pwn
+    type: tcp
+    base: pwn
+    port: 1337
+    nodeport: 30012
+    flags: 1
+
+  - name: shanks
+    path: challenges/pwn/shanks
+    category: Pwn
+    type: tcp
+    base: pwn
+    port: 1337
+    nodeport: 30013
+    flags: 1
+
+  - name: leonel-messi
+    path: challenges/pwn/leonel_messi
+    category: Pwn
+    type: tcp
+    base: custom
+    port: 1337
+    nodeport: 30033
+    flags: 1
+
+  # ── REVERSING (static download) ──────────────────────────────
+  - name: legends-gate
+    path: challenges/reversing/legends_gate
+    category: Reversing
+    type: static
+    flags: 1
+
+  - name: tournament-bracket
+    path: challenges/reversing/tournament_bracket
+    category: Reversing
+    type: static
+    flags: 3
+
+  - name: var-mobile-companion
+    path: challenges/reversing/var_mobile_companion
+    category: Reversing
+    type: static
+    flags: 5
+
+  - name: cr7
+    path: challenges/reversing/cr7
+    category: Reversing
+    type: http
+    base: custom
+    port: 8080
+    nodeport: 30034
+    flags: 1
+
+  # ── CRYPTO (static download) ─────────────────────────────────
+  - name: coach-formation
+    path: challenges/crypto/coach_formation
+    category: Crypto
+    type: static
+    flags: 1
+
+  - name: cipher-championship
+    path: challenges/crypto/cipher_championship
+    category: Crypto
+    type: static
+    flags: 3
+
+  - name: var-override
+    path: challenges/crypto/var_override
+    category: Crypto
+    type: static
+    flags: 1
+
+  - name: neymar
+    path: challenges/crypto/neymar
+    category: Crypto
+    type: tcp
+    base: misc
+    port: 1337
+    nodeport: 30032
+    flags: 1
+
+  - name: kdb
+    path: challenges/crypto/kdb
+    category: Crypto
+    type: tcp
+    base: custom
+    port: 9001
+    nodeport: 30035
+    flags: 1
+
+  - name: haaland
+    path: challenges/web/haaland
+    category: Blockchain
+    type: http
+    base: custom
+    port: 8080
+    nodeport: 30036
+    extra_ports:
+      - name: rpc
+        port: 8545
+        nodeport: 30037
+    flags: 1
+
+  # ── MISC (mixed) ─────────────────────────────────────────────
+  - name: coach-gpt
+    path: challenges/misc/coach_gpt_jailbreak
+    category: Misc
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30014
+    flags: 2
+
+  - name: referee-briefing
+    path: challenges/misc/referee_briefing
+    category: Misc
+    type: tcp
+    base: misc
+    port: 4444
+    nodeport: 30015
+    flags: 2
+
+  - name: ait-baha-nuclear
+    path: challenges/misc/ait_baha_nuclear
+    category: Misc
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30016
+    extra_ports:
+      - name: modbus
+        port: 5020
+        nodeport: 30017
+    flags: 3
+
+  - name: agadir-medport
+    path: challenges/misc/agadir_medport
+    category: Misc
+    type: tcp
+    base: misc
+    port: 1883
+    nodeport: 30018
+    flags: 3
+
+  # ── FORENSICS (mixed) ───────────────────────────────────────
+  - name: malware-lab
+    path: challenges/forensics/malware_lab_stadium
+    category: Forensics
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30019
+    flags: 1
+
+  - name: stadium-ir
+    path: challenges/forensics/stadium_ir
+    category: Forensics
+    type: tcp
+    base: custom
+    port: 2222
+    nodeport: 30020
+    flags: 2
+
+  - name: stadium-soc
+    path: challenges/forensics/stadium_soc
+    category: Forensics
+    type: http
+    base: web
+    port: 8080
+    nodeport: 30021
+    flags: 1
+
+  - name: vip-invitation
+    path: challenges/forensics/the_vip_invitation
+    category: Forensics
+    type: static
+    flags: 1
+
+  - name: pearl-binary-signature
+    path: challenges/forensics/pearl_binary_signature
+    category: Forensics
+    type: static
+    flags: 1
+
+  # ── OSINT (static download) ─────────────────────────────────
+  - name: kdb-scouting-report
+    path: challenges/osint/kdb_scouting_report
+    category: OSINT
+    type: static
+    flags: 4
+
+  - name: venue-recon
+    path: challenges/osint/venue_recon
+    category: OSINT
+    type: static
+    flags: 1

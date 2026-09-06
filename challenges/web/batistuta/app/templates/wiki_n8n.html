@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Wiki — n8n flow</title>
+<style>
+html,body{min-height:100vh;background:#0a0a14;color:#ddd;font-family:Helvetica,Arial,sans-serif;margin:0}
+.bg-gif{position:fixed;inset:0;width:100%;height:100%;z-index:0;object-fit:cover;opacity:.12;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:900px;margin:40px auto;padding:20px}
+h1,h3{color:#8ab4ff}
+pre{background:rgba(14,14,30,.92);border:1px solid #2a2440;padding:16px;overflow:auto;border-radius:4px}
+code{color:#c0e0ff}
+</style></head><body>
+<img src="/static/batistuta.webp" class="bg-gif" alt="">
+<section class="wrap">
+  <h1>Phishing Pipeline — n8n Flow</h1>
+
+  <h3>Flow diagram</h3>
+  <ol>
+    <li>Webhook receives a POST with <code>{campaign_id, email, message}</code>.</li>
+    <li>Signature is computed as <code>HMAC-SHA256(secret, JSON.stringify(body))</code>
+        and compared to the <code>x-gophish-signature: sha256=…</code> header.</li>
+    <li>On match, the pipeline looks up the email in <code>phishing.victims</code>.</li>
+    <li>If that query errors out, the "DEBUG: REMOVE SOON" node echoes the
+        failure back to the caller. <em>(still need to remove this in prod!)</em></li>
+  </ol>
+
+  <h3>Example request</h3>
+  <pre>POST /webhook/{{ webhook_id }} HTTP/1.1
+Host: localhost
+Content-Type: application/json
+x-gophish-signature: sha256=&lt;hex&gt;
+
+{"campaign_id":1,"email":"striker1@club.lab","message":"Clicked Link"}</pre>
+
+  <h3>Exported flow (JSON)</h3>
+  <pre>{{ flow_json }}</pre>
+</section>
+</body></html>

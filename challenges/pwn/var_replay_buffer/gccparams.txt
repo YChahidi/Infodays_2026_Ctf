@@ -1,0 +1,16 @@
+gcc -O1 -o var_replay_buffer var_replay_buffer.c \
+    -fstack-protector-all \
+    -Wl,-z,relro,-z,now \
+    -pie -fPIE \
+    -U_FORTIFY_SOURCE
+
+# Then: strip --strip-all var_replay_buffer
+#
+# Mitigations enabled:
+#   - Full RELRO
+#   - Stack canary
+#   - NX
+#   - PIE
+#   - Stripped symbols
+# Mitigations NOT enabled:
+#   - FORTIFY_SOURCE (disabled so read() isn't wrapped in __read_chk)

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: batistuta
+  namespace: ctfd
+  labels:
+    app: batistuta
+    category: Web
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: batistuta
+  template:
+    metadata:
+      labels:
+        app: batistuta
+        category: Web
+    spec:
+      containers:
+      - name: batistuta
+        image: registry.digitalocean.com/infodays-registry/batistuta:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: FLAG1
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: batistuta-user
+        - name: FLAG2
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: batistuta-root
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: batistuta
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: batistuta
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: NODE8080

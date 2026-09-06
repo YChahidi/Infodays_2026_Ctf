@@ -34,9 +34,29 @@ TEMPLATE = """
 </html>
 """
 
+SPLASH = '''<!doctype html>
+<html><head><meta charset="utf-8"><title>Scout Database</title>
+<style>*{margin:0;padding:0}body{background:#050a12;overflow:hidden}
+.s{width:100vw;height:100vh}
+.s img{width:100%;height:100%;object-fit:cover}
+.o{position:fixed;inset:0;background:linear-gradient(to bottom,rgba(5,10,18,.1),rgba(5,10,18,.05) 40%,rgba(5,10,18,.5) 80%,rgba(5,10,18,.95));pointer-events:none}
+.t{position:fixed;bottom:60px;width:100%;text-align:center;z-index:2;font-family:Inter,system-ui,sans-serif}
+.t h1{font-size:48px;font-weight:800;color:#fff;text-shadow:0 2px 40px rgba(0,0,0,.8)}
+.t h1 span{color:#5e9fff}
+.t p{color:#8899b5;font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+</style></head><body>
+<div class="s"><img src="/static/asshole.jpeg" alt=""></div>
+<div class="o"></div>
+<div class="t"><h1>&#x1F50D; <span>Scout</span> Database</h1>
+<p>Stadium Scout Portal</p></div>
+</body></html>'''
+
 @app.route('/')
 def home():
-    # Redirecting the base URL to show the portal immediately
+    return SPLASH
+
+@app.route('/portal')
+def portal():
     return render_template_string(TEMPLATE, message="System Ready. Awaiting ID input...")
 
 @app.route('/code_search')
@@ -70,5 +90,4 @@ def code_search():
     return render_template_string(TEMPLATE, message=message)
 
 if __name__ == '__main__':
-    # Running on port 8005 as configured in your docker-compose
-    app.run(host='0.0.0.0', port=8005)
+    app.run(host='0.0.0.0', port=8080)

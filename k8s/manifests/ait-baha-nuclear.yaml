@@ -1,0 +1,60 @@
+# Template — replace ait-baha-nuclear, Misc, 8080, NODE8080, IMAGE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ait-baha-nuclear
+  namespace: ctfd
+  labels:
+    app: ait-baha-nuclear
+    category: Misc
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: ait-baha-nuclear
+  template:
+    metadata:
+      labels:
+        app: ait-baha-nuclear
+        category: Misc
+    spec:
+      containers:
+      - name: ait-baha-nuclear
+        image: registry.digitalocean.com/infodays-registry/ait-baha-nuclear:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: FLAG
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: ait-baha-nuclear
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ait-baha-nuclear
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: ait-baha-nuclear
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: NODE8080

@@ -1,0 +1,60 @@
+# Template — replace coach-gpt, Misc, 8080, NODE8080, IMAGE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coach-gpt
+  namespace: ctfd
+  labels:
+    app: coach-gpt
+    category: Misc
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: coach-gpt
+  template:
+    metadata:
+      labels:
+        app: coach-gpt
+        category: Misc
+    spec:
+      containers:
+      - name: coach-gpt
+        image: registry.digitalocean.com/infodays-registry/coach-gpt:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: FLAG
+          valueFrom:
+            secretKeyRef:
+              name: flags-TEAM_ID
+              key: coach-gpt
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coach-gpt
+  namespace: ctfd
+spec:
+  type: NodePort
+  selector:
+    app: coach-gpt
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: NODE8080
