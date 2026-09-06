@@ -19,7 +19,7 @@ This repository hosts the source, artifacts, and writeups for the Capture The Fl
 
 # Challenges
 
-> **Difficulty** is taken from each challenge's README where documented; `TBA` marks challenges not yet documented. **Flags** is the number of flags in the challenge. **Author** is derived from the repository commit history. All challenges live under [`challenges/`](challenges).
+> All challenges live under [`challenges/`](challenges).
 
 | Challenge | Difficulty | Category | Flags | Author | Writeup |
 | --------- | ---------- | -------- | :---: | ------ | ------- |
