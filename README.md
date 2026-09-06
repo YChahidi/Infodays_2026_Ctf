@@ -11,7 +11,7 @@
 
 # About us
 
-**Info Days** is the flagship technical event organized by [AppsClub](https://github.com/YChahidi) at [ENSA Agadir](https://www.ensa.uiz.ac.ma), designed to bridge the gap between academic theory and industry reality. Through expert-led conferences and hands-on workshops, it empowers the next generation of engineers to explore, innovate and master emerging technologies.
+**Info Days** is the flagship technical event organized by [AppsClub](https://www.linkedin.com/company/appsclub-ensaa/) at ENSA Agadir, designed to bridge the gap between academic theory and industry reality. Through expert-led conferences and hands-on workshops, it empowers the next generation of engineers to explore, innovate and master emerging technologies.
 
 This repository hosts the source, artifacts, and writeups for the Capture The Flag competition run as part of the event.
 
